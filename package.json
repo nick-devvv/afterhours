@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "sync-prompts": "tsx scripts/sync-prompts.ts",
     "smoke-grokbot": "tsx scripts/smoke-grokbot.ts",
-    "smoke-run": "tsx scripts/smoke-run.ts"
+    "smoke-run": "tsx scripts/smoke-run.ts",
+    "record-run": "tsx scripts/record-run.ts"
   },
   "dependencies": {
     "@ai-sdk/xai": "^2.0.0",

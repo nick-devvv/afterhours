@@ -38,6 +38,9 @@ export function config() {
     sendblueSecret: e.SENDBLUE_API_SECRET || '',
     sendblueFrom: e.SENDBLUE_FROM || '',
     textAllowlist: list(e.TEXT_ALLOWLIST),
+    /** true: an owner who opened our Telegram link and pressed Start can be texted without being in TEXT_ALLOWLIST.
+     *  They linked their own chat to their own owner id, so it's still never a third party. */
+    textAllowSelfLinked: e.TEXT_ALLOW_SELF_LINKED === 'true',
     resendKey: e.RESEND_API_KEY || '',
     mailFrom: e.MAIL_FROM || '',
     mailAllowlist: list(e.MAIL_ALLOWLIST).map((s) => s.toLowerCase()),

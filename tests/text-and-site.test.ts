@@ -82,3 +82,20 @@ describe('site checker parsers', () => {
     expect(fs[0].title).toBe('Your booking link is broken (404)');
   });
 });
+
+describe('who Rosa may text', () => {
+  it('allowlist, or self-linked Telegram owners only when the flag is on', async () => {
+    const { allowlisted } = await import('../lib/text/send');
+    const o = { id: 'own_1', name: 'Maya', channel: 'telegram' as const, telegramChatId: '555', verified: true, timezone: 'America/Los_Angeles', briefAt: '07:30', quiet: { from: '21:00', to: '07:00' }, stopped: false, runIds: [] };
+    process.env.TEXT_ALLOWLIST = '';
+    process.env.TEXT_ALLOW_SELF_LINKED = 'false';
+    expect(allowlisted(o)).toBe(false);
+    process.env.TEXT_ALLOW_SELF_LINKED = 'true';
+    expect(allowlisted(o)).toBe(true);
+    expect(allowlisted({ ...o, verified: false })).toBe(false);
+    expect(allowlisted({ ...o, channel: 'imessage' as const, phone: '+14155550123', telegramChatId: undefined })).toBe(false);
+    process.env.TEXT_ALLOW_SELF_LINKED = 'false';
+    process.env.TEXT_ALLOWLIST = '555';
+    expect(allowlisted(o)).toBe(true);
+  });
+});
