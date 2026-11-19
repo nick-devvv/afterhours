@@ -34,8 +34,8 @@ async function api<T>(method: string, path: string, body?: unknown): Promise<T> 
 }
 
 function Bot({ color }: { color: string }) {
-  const grid = ['...a....', '.mmmmmm.', 'mmmmmmmm', 'mvvvvvvm', 'mvgvvgvm', 'mmmmmmmm', '.mmggmm.', 'gmmmmmmg'];
-  const c: Record<string, string> = { m: '#DFE6EF', v: '#05070D', g: color, a: color };
+  const grid = ['....a...', '..bbbb..', '.bbbbbb.', 'bvvvvvvb', 'bvllllvb', 'bbbbbbbb', 'bwwwwwwb', '.wwwwww.'];
+  const c: Record<string, string> = { b: color, v: '#07060F', l: '#E9FBFF', w: '#F2F6FF', a: '#E9FBFF' };
   return (
     <svg width="34" height="34" viewBox="0 0 8 8" shapeRendering="crispEdges" aria-hidden="true" style={{ flex: 'none', borderRadius: 8, background: 'rgba(242,246,255,.06)' }}>
       {grid.flatMap((row, y) => [...row].map((ch, x) => (ch === '.' ? null : <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={c[ch]} />)))}

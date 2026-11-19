@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import type { AgentDef, AgentId } from './data';
 import { box } from './world';
+import { rawMat } from './parts';
 import { EDGES, NODES } from './layout';
 
 // ---- navigation -------------------------------------------------------------
@@ -78,56 +79,41 @@ export class Worker {
     const g = this.group;
     g.userData.workerId = def.id;
     g.add(this.body);
-    // A Grok bot: chrome body, dark joints, a visor with glowing eyes and an antenna in the agent's colour.
-    const R = { raw: true };
-    const METAL = 0xdfe6ef, PLATE = 0xb9c3d1, JOINT = 0x232838, VISOR = 0x05070d, GLOW = L.shirt;
-    // legs (pivot at the hip)
-    for (const [hip, x] of [[this.hipL, -0.11], [this.hipR, 0.11]] as [THREE.Group, number][]) {
-      hip.position.set(x, 0.46, 0);
-      box(hip, 0.12, 0.4, 0.14, JOINT, 0, -0.42, 0, R);
-      box(hip, 0.15, 0.16, 0.17, PLATE, 0, -0.3, 0.01, R);
-      box(hip, 0.2, 0.09, 0.26, METAL, 0, -0.46, 0.03, R);
-      box(hip, 0.16, 0.03, 0.02, GLOW, 0, -0.42, 0.165, { raw: true, cast: false, emissive: GLOW, ei: 1.4 });
-      this.body.add(hip);
-    }
-    // torso: chest plate with a status light
-    box(this.body, 0.48, 0.5, 0.3, METAL, 0, 0.44, 0, R);
-    box(this.body, 0.5, 0.07, 0.32, JOINT, 0, 0.46, 0, R);
-    box(this.body, 0.22, 0.12, 0.02, GLOW, 0, 0.68, 0.155, { raw: true, cast: false, emissive: GLOW, ei: 1.8 });
-    box(this.body, 0.3, 0.16, 0.12, PLATE, 0, 0.66, -0.2, R);
-    // arms (pivot at the shoulder)
-    for (const [sh, x] of [[this.shL, -0.31], [this.shR, 0.31]] as [THREE.Group, number][]) {
-      sh.position.set(x, 0.9, 0);
-      box(sh, 0.18, 0.14, 0.18, GLOW, 0, -0.1, 0, { raw: true, emissive: GLOW, ei: 0.35 });
-      box(sh, 0.11, 0.36, 0.12, PLATE, 0, -0.42, 0, R);
-      box(sh, 0.14, 0.12, 0.14, JOINT, 0, -0.52, 0, R);
-      this.body.add(sh);
-    }
+    // An Afterhours bot: a soft hovering gumdrop in the agent's colour, a dark visor with one LED bar,
+    // an antenna, and a glowing hover ring. No limbs; held things float beside it.
+    const COLOR = L.shirt, VISOR = 0x07060f, LED = 0xe9fbff;
+    const shell = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.36, 6, 16), rawMat(COLOR, COLOR, 0.18));
+    shell.position.set(0, 0.66, 0); shell.castShadow = true; shell.receiveShadow = true;
+    this.body.add(shell);
+    const belly = new THREE.Mesh(new THREE.SphereGeometry(0.31, 16, 10, 0, Math.PI * 2, Math.PI * 0.55, Math.PI * 0.45), rawMat(0xf2f6ff, 0, 1));
+    belly.position.set(0, 0.48, 0.0); belly.scale.set(0.98, 0.9, 0.98);
+    this.body.add(belly);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.035, 6, 24), rawMat(COLOR, COLOR, 2.2));
+    ring.rotation.x = Math.PI / 2; ring.position.set(0, 0.12, 0);
+    this.body.add(ring);
+    // pivots kept for the walk and job animations (they move held items)
+    for (const [hip, x] of [[this.hipL, -0.11], [this.hipR, 0.11]] as [THREE.Group, number][]) { hip.position.set(x, 0.46, 0); this.body.add(hip); }
+    for (const [sh, x] of [[this.shL, -0.42], [this.shR, 0.42]] as [THREE.Group, number][]) { sh.position.set(x, 0.92, 0); this.body.add(sh); }
     this.hand.position.set(0, -0.5, 0.08);
     this.shR.add(this.hand);
-    this.carry.position.set(0, 0.72, 0.32);
+    this.carry.position.set(0, 0.72, 0.36);
     this.body.add(this.carry);
-    // head: a rounded-off box, visor band, two eyes, ear pods, antenna
-    this.head.position.set(0, 0.96, 0);
-    box(this.head, 0.06, 0.06, 0.06, JOINT, 0, -0.04, 0, R);
-    box(this.head, 0.42, 0.34, 0.36, METAL, 0, 0.02, 0, R);
-    box(this.head, 0.36, 0.06, 0.3, PLATE, 0, 0.36, 0, R);
-    box(this.head, 0.38, 0.15, 0.03, VISOR, 0, 0.12, 0.18, { raw: true, cast: false });
-    box(this.head, 0.08, 0.05, 0.02, GLOW, -0.08, 0.17, 0.198, { raw: true, cast: false, emissive: GLOW, ei: 2.4 });
-    box(this.head, 0.08, 0.05, 0.02, GLOW, 0.08, 0.17, 0.198, { raw: true, cast: false, emissive: GLOW, ei: 2.4 });
-    box(this.head, 0.06, 0.16, 0.16, GLOW, -0.23, 0.1, 0, { raw: true, emissive: GLOW, ei: 0.5 });
-    box(this.head, 0.06, 0.16, 0.16, GLOW, 0.23, 0.1, 0, { raw: true, emissive: GLOW, ei: 0.5 });
-    box(this.head, 0.03, 0.2, 0.03, JOINT, 0.1, 0.42, -0.04, R);
-    box(this.head, 0.07, 0.07, 0.07, GLOW, 0.1, 0.62, -0.04, { raw: true, cast: false, emissive: GLOW, ei: 2.2 });
+    // the head group carries the face, so looks and nods move it
+    this.head.position.set(0, 0.86, 0);
+    box(this.head, 0.44, 0.15, 0.1, VISOR, 0, -0.02, 0.24, { raw: true, cast: false });
+    box(this.head, 0.3, 0.04, 0.02, LED, 0, 0.035, 0.295, { raw: true, cast: false, emissive: LED, ei: 2.6 });
+    box(this.head, 0.025, 0.2, 0.025, 0x232838, 0.12, 0.2, -0.02, { raw: true });
+    const tip = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 8), rawMat(LED, COLOR, 2.4));
+    tip.position.set(0.12, 0.42, -0.02);
+    this.head.add(tip);
     this.body.add(this.head);
-    this.accessories();
     // AI agent marker: a glowing diamond in the agent's colour, plus a thin ring
     const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.14, 0), new THREE.MeshLambertMaterial({ color: L.shirt, emissive: L.shirt, emissiveIntensity: 0.65 }));
     this.marker.add(gem);
     const halo = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.025, 4, 12), new THREE.MeshBasicMaterial({ color: L.shirt }));
     halo.rotation.x = Math.PI / 2;
     this.marker.add(halo);
-    this.marker.position.set(0, 1.95, 0);
+    this.marker.position.set(0, 1.62, 0);
     this.group.add(this.marker);
     box(this.phone, 0.07, 0.18, 0.04, 0x22170f, 0, -0.08, 0.1, { cast: false });
     this.phone.visible = false;

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Afterhours · the shop</title>
 <script src="./support.js"></script>
-<script src="/_blob/75b8bb113279e65c4b91a40d667f9598"></script>
+<script src="/_blob/e0dd585d02bcbcca1dc4de0c69527205"></script>
 </head>
 <body>
 <x-dc>
@@ -825,10 +825,10 @@ class Component extends DCLogic {
     return { who: a.name, role: a.role + ' agent', hasRole: true, text, color: COLORS[a.id], px: this.portrait(a.id) };
   }
   portrait(id) {
-    // A Grok bot, 8x8: antenna, chrome head, dark visor with glowing eyes, chest light.
+    // An Afterhours bot, 8x8: antenna, soft body in the agent's colour, dark visor with one LED bar.
     const glow = { penny: '#FF3BD4', dock: '#FFC23D', audrey: '#39FF9F', sid: '#8F6BFF', scout: '#39E8FF', felix: '#FF6A3D' }[id] || '#39E8FF';
-    const grid = ['...a....', '.mmmmmm.', 'mmmmmmmm', 'mvvvvvvm', 'mvgvvgvm', 'mmmmmmmm', '.mmggmm.', 'gmmmmmmg'];
-    const colors = { m: '#DFE6EF', v: '#05070D', g: glow, a: glow };
+    const grid = ['....a...', '..bbbb..', '.bbbbbb.', 'bvvvvvvb', 'bvllllvb', 'bbbbbbbb', 'bwwwwwwb', '.wwwwww.'];
+    const colors = { b: glow, v: '#07060F', l: '#E9FBFF', w: '#F2F6FF', a: '#E9FBFF' };
     const px = [];
     for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) {
       const ch = grid[y][x];
