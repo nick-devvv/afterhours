@@ -161,8 +161,8 @@ export const setBusiness = defineTool({
     website: z.string().url().optional(),
     phone: z.string().max(40).optional(),
     timezone: z.string().max(60).optional(),
-    hours: z.array(z.object({ label: z.string().max(60), text: z.string().max(300), sourceId: z.string() }).strict()).max(6).optional(),
-    rating: z.object({ value: z.number().min(0).max(5), count: z.number().int().min(0), sourceId: z.string() }).strict().optional(),
+    hours: z.array(z.strictObject({ label: z.string().max(60), text: z.string().max(300), sourceId: z.string() })).max(6).optional(),
+    rating: z.strictObject({ value: z.number().min(0).max(5), count: z.number().int().min(0), sourceId: z.string() }).optional(),
     sourceIds: z.array(z.string()).min(1),
   },
   async run({ runId, agent, sourceIds, hours, rating, ...fields }) {
@@ -191,7 +191,7 @@ export const addMenuItems = defineTool({
   description: "Rosa: the business's own items with clear prices (up to 15), each with the sourceId of the page where you read the price.",
   agents: ['rosa'],
   input: {
-    items: z.array(z.object({ name: z.string().min(1).max(80), size: z.string().max(30).optional(), priceCents: cents, sourceId: z.string() }).strict()).min(1).max(25),
+    items: z.array(z.strictObject({ name: z.string().min(1).max(80), size: z.string().max(30).optional(), priceCents: cents, sourceId: z.string() })).min(1).max(25),
   },
   async run({ runId, agent, items }) {
     const { result } = await mutate(runId, ({ run, emit }) => {
@@ -226,8 +226,8 @@ export const addCompetitor = defineTool({
     address: z.string().max(200).optional(),
     distanceM: z.number().min(0).max(50_000).optional(),
     website: z.string().url().optional(),
-    rating: z.object({ value: z.number().min(0).max(5), count: z.number().int().min(0) }).strict().optional(),
-    items: z.array(z.object({ name: z.string().min(1).max(80), size: z.string().max(30).optional(), priceCents: cents, sourceId: z.string(), matchesItemId: z.string().optional() }).strict()).max(30),
+    rating: z.strictObject({ value: z.number().min(0).max(5), count: z.number().int().min(0) }).optional(),
+    items: z.array(z.strictObject({ name: z.string().min(1).max(80), size: z.string().max(30).optional(), priceCents: cents, sourceId: z.string(), matchesItemId: z.string().optional() })).max(30),
     sourceIds: z.array(z.string()).min(1),
   },
   async run({ runId, agent, items, sourceIds, ...fields }) {
@@ -291,7 +291,7 @@ export const reportReviewTheme = defineTool({
   agents: ['june'],
   input: {
     theme: z.string().min(2).max(80),
-    mentions: z.array(z.object({ sourceId: z.string(), quote: z.string().min(1).max(600), date: z.string().max(40).optional(), stars: z.number().min(0).max(5).optional() }).strict()).min(2).max(12),
+    mentions: z.array(z.strictObject({ sourceId: z.string(), quote: z.string().min(1).max(600), date: z.string().max(40).optional(), stars: z.number().min(0).max(5).optional() })).min(2).max(12),
     suggestion: z.string().min(1).max(400),
   },
   async run({ runId, agent, theme, mentions, suggestion }, ctx) {
@@ -361,7 +361,7 @@ export const reportListingIssue = defineTool({
   agents: ['otto'],
   input: {
     field: z.enum(['hours', 'phone', 'address']),
-    values: z.array(z.object({ label: z.string().min(1).max(60), text: z.string().min(1).max(300), sourceId: z.string() }).strict()).min(2).max(5),
+    values: z.array(z.strictObject({ label: z.string().min(1).max(60), text: z.string().min(1).max(300), sourceId: z.string() })).min(2).max(5),
   },
   async run({ runId, agent, field, values }) {
     const { result } = await mutate(runId, ({ run, emit }) => {
