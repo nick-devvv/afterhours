@@ -6,7 +6,7 @@ import type * as AH from '@/lib/types';
 import type { AgentId, Crew, CrewHooks, Finding, Fix, PlumbEvent, Shop } from './types';
 
 /** Afterhours crew → the shop's sprites (same rooms and walk paths as before). */
-const AGENT: Record<AH.AgentId, AgentId> = { rosa: 'penny', vic: 'scout', june: 'dock', otto: 'sid', lou: 'audrey', dot: 'audrey', fern: 'felix' }; // dot (file clerk, backend) shares Lou's back-office sprite until it gets its own
+const AGENT: Record<AH.AgentId, AgentId> = { rosa: 'penny', vic: 'scout', june: 'dock', otto: 'sid', lou: 'audrey', dot: 'audrey', fern: 'felix' };
 const toAgent = (a?: string) => (a && a in AGENT ? AGENT[a as AH.AgentId] : (a as AgentId | undefined));
 
 interface Health { ok: boolean; crew: AH.CrewMode; xai?: boolean; text?: string }

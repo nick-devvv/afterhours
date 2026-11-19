@@ -12,21 +12,22 @@
     "bundle-canvas": "esbuild app/_shop/engine/index.ts --bundle --format=iife --minify --target=es2020 --outfile=public/afterhours-shop.js",
     "typecheck": "tsc --noEmit",
     "sync-prompts": "tsx scripts/sync-prompts.ts",
-    "smoke-grokbot": "tsx scripts/smoke-grokbot.ts"
+    "smoke-grokbot": "tsx scripts/smoke-grokbot.ts",
+    "smoke-run": "tsx scripts/smoke-run.ts"
   },
   "dependencies": {
     "@ai-sdk/xai": "^2.0.0",
     "@modelcontextprotocol/sdk": "^1.24.0",
-    "@upstash/redis": "^1.41.0",
+    "@upstash/redis": "^1.35.0",
     "@vercel/functions": "^3.11.3",
     "ai": "^5.0.0",
-    "mcp-handler": "^1.1.0",
+    "mcp-handler": "^1.0.2",
     "next": "16.4.6",
     "papaparse": "^5.7.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "three": "^0.187.0",
-    "zod": "^4.6.7"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
@@ -34,11 +35,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.187.0",
+    "esbuild": "^0.28.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tsx": "^4.23.15",
     "typescript": "^5",
-    "vitest": "^5.1.0",
-    "esbuild": "^0.28.0"
+    "vitest": "^3.2.0"
   }
 }
