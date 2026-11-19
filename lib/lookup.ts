@@ -1,6 +1,6 @@
 // "Name any business": one Grok call with web search → 1-5 real candidates with a source link each.
 import { generateText } from 'ai';
-import { serverTools, xaiModel } from './crew/xai';
+import { fastOptions, serverTools, xaiModel } from './crew/xai';
 import { z } from 'zod';
 import type { BusinessCandidate } from './types';
 import { config } from './config';
@@ -44,13 +44,14 @@ export async function lookup(query: string): Promise<BusinessCandidate[]> {
   const c = config();
   if (!c.xaiKey) throw new ApiErr('upstream_failed', 'XAI_API_KEY is not set');
   let prompt = `Business: ${q}`;
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < 1; attempt++) {
     const r = (await generateText({
       model: xaiModel(),
       system: SYSTEM,
       prompt,
       tools: serverTools({ web: true }),
-      abortSignal: AbortSignal.timeout(25_000),
+      providerOptions: fastOptions(),
+      abortSignal: AbortSignal.timeout(50_000),
     } as never)) as unknown as { text: string };
     try {
       const candidates = parseCandidates(r.text);

@@ -1,3 +1,4 @@
+import { fastOptions } from '@/lib/crew/xai';
 // Dot's shift: take every file the owner sent, sort it, keep the rows for Lou, show the work in the shop.
 import { z } from 'zod';
 import type { BooksField, SortedFile, Source } from '../types';
@@ -30,6 +31,7 @@ async function askGrok(items: { index: number; name: string; p: ParsedFile }[]):
       model: xaiModel(),
       system: `${prompts.dot}\n\nReply with ONLY JSON: {"files":[{"index":0,"kind":"expenses|sales|catalog|other","columns":{"date":"<their header>"},"reason":"one sentence"}]}`,
       prompt: JSON.stringify(items.map(({ index, name, p }) => ({ index, name, headers: p.headers, sampleRows: p.rows.slice(0, 5) }))),
+      providerOptions: fastOptions(),
       abortSignal: AbortSignal.timeout(30_000),
     } as never)) as unknown as { text: string };
     const json = r.text.match(/\{[\s\S]*\}/)?.[0];

@@ -18,3 +18,9 @@ export function serverTools(opts: { web?: boolean; x?: boolean }): Record<string
   }
   return { ...(opts.web && t.webSearch ? { web_search: t.webSearch() } : {}), ...(opts.x && t.xSearch ? { x_search: t.xSearch() } : {}) };
 }
+
+/** Grok 4.7 at low reasoning effort: fast enough for a live demo. XAI_REASONING=medium|high to change it. */
+export function fastOptions() {
+  const effort = (process.env.XAI_REASONING || 'low') as 'low' | 'medium' | 'high';
+  return { xai: { reasoningEffort: effort } };
+}

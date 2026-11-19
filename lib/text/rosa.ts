@@ -1,6 +1,7 @@
 // Rosa answers free questions from the run's own data only. She never approves anything from free text.
 import { generateText } from 'ai';
 import { xaiModel } from '../crew/xai';
+import { fastOptions } from '../crew/xai';
 import type { Run } from '../types';
 import { config } from '../config';
 import { formatCents } from '../engine/money';
@@ -26,6 +27,7 @@ export async function answerQuestion(run: Run, question: string): Promise<string
       system:
         "You are Rosa, night manager at Afterhours, texting a small-business owner. Answer in 2-3 short sentences using ONLY the run data provided. Use dollar figures only exactly as they appear in the data. If the data doesn't say, say you don't know. Never approve or reject anything; if they want to, tell them to reply YES n or NO n. No markdown.",
       prompt: `Run data:\n${JSON.stringify(runBrief(run))}\n\nOwner's text: ${question}`,
+      providerOptions: fastOptions(),
       abortSignal: AbortSignal.timeout(20_000),
     } as never);
     return ((r as { text: string }).text || "Sorry, I didn't catch that.").trim().slice(0, 480);

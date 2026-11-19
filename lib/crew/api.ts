@@ -1,6 +1,7 @@
 // The API crew: each agent is a Grok loop with xAI web/X search plus our tools as function calls.
 import { generateText, stepCountIs } from 'ai';
 import { serverTools as xaiServerTools, xaiModel } from './xai';
+import { fastOptions } from './xai';
 import type { AgentId } from '../types';
 import { config } from '../config';
 import { getRecord, mutate } from '../store';
@@ -58,6 +59,7 @@ export async function runAgent(runId: string, agent: AgentId, phase: Phase) {
       prompt: JSON.stringify({ runId, agent, phase, business: rec.run.business, picked: agent === 'rosa' && phase === 'resolve' ? candidateOf(rec.shift) : undefined, today: new Date().toISOString().slice(0, 10) }),
       tools: { ...serverTools, ...aiTools(agent, runId) } as never,
       stopWhen: stepCountIs(c.apiMaxSteps),
+      providerOptions: fastOptions(),
       abortSignal: AbortSignal.timeout(c.apiBudgetMs),
       onStepFinish: async (step: { toolCalls?: { toolName: string; input?: unknown; args?: unknown }[] }) => {
         const calls = step.toolCalls ?? [];
