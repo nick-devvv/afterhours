@@ -1,0 +1,33 @@
+{
+  "name": "afterhours",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "sync-prompts": "tsx scripts/sync-prompts.ts",
+    "smoke-grokbot": "tsx scripts/smoke-grokbot.ts",
+    "smoke-run": "tsx scripts/smoke-run.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/xai": "^2.0.0",
+    "@modelcontextprotocol/sdk": "^1.24.0",
+    "@upstash/redis": "^1.35.0",
+    "ai": "^5.0.0",
+    "mcp-handler": "^1.0.2",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.0"
+  }
+}
