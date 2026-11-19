@@ -7,7 +7,7 @@ const list = (v?: string) =>
     .map((s) => s.trim())
     .filter(Boolean);
 
-export const CREW_AGENTS: AgentId[] = ['rosa', 'vic', 'june', 'otto', 'fern'];
+export const CREW_AGENTS: AgentId[] = ['rosa', 'vic', 'june', 'otto', 'fern', 'lou'];
 
 export function config() {
   // Trim every value: a key pasted with a trailing space or newline must still work.
