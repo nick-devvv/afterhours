@@ -35,7 +35,7 @@ export async function runAgent(runId: string, agent: AgentId, phase: Phase) {
     await finishJob(runId, agent, { summary: 'XAI_API_KEY is not set, so the API crew could not work.', ok: false });
     return;
   }
-  const serverTools = xaiServerTools({ web: agent !== 'fern', x: agent === 'june' });
+  const serverTools = xaiServerTools({ web: !['fern', 'lou', 'dot'].includes(agent), x: agent === 'june' });
 
   const task =
     agent === 'rosa' ? (phase === 'resolve' ? 'Phase resolve: resolve the business, its hours and items with prices.' : 'Phase report: text the owner the numbered fixes and totals.') : 'Do your job.';
