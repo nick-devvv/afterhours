@@ -1,0 +1,15 @@
+/* The artboards style themselves (inline, like on the design canvas). Keep this file nearly empty. */
+html, body { margin: 0; height: 100%; background: #07050F; color: #E9F6FF; }
+
+/* Afterhours app chrome (landing form, phone mirror) */
+.ah-input { width: 100%; box-sizing: border-box; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid #3B2F66; background: #0E0A1C; color: #E9F6FF; font: 500 16px Geist, system-ui, sans-serif; }
+.ah-input:focus { outline: 2px solid #39E8FF; outline-offset: 1px; }
+.ah-btn { min-height: 52px; padding: 0 22px; border: 0; border-radius: 999px; background: #C2189E; color: #F2F6FF; font: 700 16px Geist, system-ui, sans-serif; cursor: pointer; }
+.ah-btn:disabled { opacity: .5; cursor: default; }
+.ah-btn.ghost { background: transparent; border: 1px solid #3B2F66; color: #E9F6FF; }
+.ah-file { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 12px; border: 1px dashed #3B2F66; background: rgba(14,10,28,.6); cursor: pointer; }
+.ah-file:focus-within { outline: 2px solid #39E8FF; }
+.ah-cand { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 12px; border: 1px solid #2A2148; background: #0E0A1C; cursor: pointer; text-align: left; color: inherit; font: inherit; width: 100%; }
+.ah-cand[aria-pressed="true"] { border-color: #39E8FF; box-shadow: 0 0 0 1px #39E8FF, 0 0 24px rgba(57,232,255,.25); }
+@keyframes ahPulse { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important } }

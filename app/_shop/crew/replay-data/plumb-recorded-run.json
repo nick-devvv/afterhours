@@ -1,0 +1,1495 @@
+{
+  "run": {
+    "id": "run_mwmesfap_91f703",
+    "shop": {
+      "id": "shop_run_mwmesfap_91f703",
+      "name": "Fogline Coffee",
+      "city": "San Francisco, CA",
+      "fictional": true,
+      "counts": {
+        "expenses": 214,
+        "sales": 1986,
+        "products": 12
+      },
+      "products": [
+        {
+          "sku": "HB-12",
+          "name": "House Blend 12oz",
+          "priceCents": 1700
+        },
+        {
+          "sku": "CB-64",
+          "name": "Cold Brew Growler 64oz",
+          "priceCents": 1700
+        },
+        {
+          "sku": "OL-16",
+          "name": "Oat Latte 16oz",
+          "priceCents": 575
+        },
+        {
+          "sku": "ES-02",
+          "name": "Espresso Double",
+          "priceCents": 325
+        },
+        {
+          "sku": "AM-12",
+          "name": "Americano 12oz",
+          "priceCents": 375
+        },
+        {
+          "sku": "CP-16",
+          "name": "Cappuccino 16oz",
+          "priceCents": 475
+        },
+        {
+          "sku": "MC-16",
+          "name": "Mocha 16oz",
+          "priceCents": 525
+        },
+        {
+          "sku": "DR-12",
+          "name": "Drip Coffee 12oz",
+          "priceCents": 275
+        },
+        {
+          "sku": "CR-09",
+          "name": "Butter Croissant",
+          "priceCents": 450
+        },
+        {
+          "sku": "BG-05",
+          "name": "Bagel and Cream Cheese",
+          "priceCents": 400
+        },
+        {
+          "sku": "MF-06",
+          "name": "Morning Bun",
+          "priceCents": 475
+        },
+        {
+          "sku": "SB-08",
+          "name": "Seasonal Beans 1lb",
+          "priceCents": 2200
+        }
+      ],
+      "suppliers": [
+        "Alder and Oak Supply",
+        "Bayside Beverage",
+        "Ferry Building Produce",
+        "Fog City Paper",
+        "Mission Mill Bakery",
+        "Pacific Cup Co.",
+        "Ridgeline Roasters",
+        "Salt Flats Syrup",
+        "Tidewater Dairy"
+      ],
+      "subscriptions": [
+        "Beanstalk Inventory",
+        "Harbor Mutual Insurance",
+        "LedgerLite Accounting",
+        "ShiftPilot Scheduling",
+        "TillPoint POS"
+      ]
+    },
+    "crew": "mock",
+    "status": "done",
+    "agents": [
+      {
+        "id": "penny",
+        "name": "Penny",
+        "role": "shift manager",
+        "job": "Starts the shift, keeps the crew moving, reports the total",
+        "home": "front_desk",
+        "room": "front_desk",
+        "status": "done",
+        "progress": 100,
+        "foundCents": 0,
+        "skills": [
+          "plumb-tools"
+        ],
+        "message": "Shift closed. $4,600.00 recovered in the first year."
+      },
+      {
+        "id": "dock",
+        "name": "Dock",
+        "role": "receiving",
+        "job": "Unloads the owner's exports and checks they're readable",
+        "home": "loading_dock",
+        "room": "loading_dock",
+        "status": "done",
+        "progress": 100,
+        "foundCents": 0,
+        "skills": [
+          "plumb-tools"
+        ],
+        "message": "214 expenses, 1986 sales lines checked in."
+      },
+      {
+        "id": "audrey",
+        "name": "Audrey",
+        "role": "auditor",
+        "job": "Finds bills paid twice",
+        "home": "back_office",
+        "room": "back_office",
+        "status": "done",
+        "progress": 100,
+        "foundCents": 124000,
+        "skills": [
+          "plumb-tools"
+        ],
+        "message": "1 bills paid twice. $1,240.00 a year."
+      },
+      {
+        "id": "sid",
+        "name": "Sid",
+        "role": "subscription hunter",
+        "job": "Finds plans that quietly got more expensive",
+        "home": "server_closet",
+        "room": "server_closet",
+        "status": "done",
+        "progress": 100,
+        "foundCents": 60000,
+        "skills": [
+          "plumb-tools"
+        ],
+        "message": "1 plans that crept up. $600.00 a year."
+      },
+      {
+        "id": "scout",
+        "name": "Scout",
+        "role": "price scout",
+        "job": "Checks what the shops across the street charge",
+        "home": "shop_floor",
+        "room": "shop_floor",
+        "status": "done",
+        "progress": 100,
+        "foundCents": 276000,
+        "skills": [
+          "plumb-tools",
+          "web-search"
+        ],
+        "message": "2 prices out of line. $2,760.00 a year."
+      },
+      {
+        "id": "felix",
+        "name": "Felix",
+        "role": "fixer",
+        "job": "Drafts refund requests and price changes, sends the approved ones",
+        "home": "mailroom",
+        "room": "mailroom",
+        "status": "done",
+        "progress": 100,
+        "foundCents": 0,
+        "skills": [
+          "plumb-tools",
+          "clawmax-resend"
+        ],
+        "message": "2 sent, 2 prices changed."
+      }
+    ],
+    "findings": [
+      {
+        "id": "find-dup-exp-0189",
+        "kind": "duplicate_payment",
+        "room": "back_office",
+        "agent": "audrey",
+        "title": "Invoice RR-1182 paid twice",
+        "detail": "Invoice RR-1182 was paid on Oct 3 and again on Oct 7 for $1,240.00 each time, under the same reference. Assuming the second payment was not a credit against a later order, $1,240.00 is owed back.",
+        "oneTimeCents": 124000,
+        "monthlyCents": 0,
+        "firstYearCents": 124000,
+        "facts": {
+          "amount": "$1,240.00",
+          "invoice": "RR-1182",
+          "paidOn": "Oct 3",
+          "againOn": "Oct 7",
+          "payee": "Ridgeline Roasters"
+        },
+        "evidence": [
+          {
+            "source": "expenses",
+            "rowId": "exp-0180",
+            "label": "Ridgeline Roasters · RR-1182 · Oct 3 · $1,240.00",
+            "amountCents": 124000,
+            "date": "2026-10-03"
+          },
+          {
+            "source": "expenses",
+            "rowId": "exp-0189",
+            "label": "Ridgeline Roasters · RR-1182 · Oct 7 · $1,240.00",
+            "amountCents": 124000,
+            "date": "2026-10-07"
+          }
+        ],
+        "fix": {
+          "type": "refund_request",
+          "to": "vendor+ridgeline-roasters@example.com"
+        }
+      },
+      {
+        "id": "find-sub-tillpoint-pos",
+        "kind": "subscription_creep",
+        "room": "server_closet",
+        "agent": "sid",
+        "title": "TillPoint POS went from $69.00 to $119.00 a month in August",
+        "detail": "TillPoint POS charged $69.00 a month to start, then $119.00 from August on. Assuming the cheaper tier still covers what the shop uses, the extra $50.00 a month ($600.00 a year) is recoverable by downgrading.",
+        "oneTimeCents": 0,
+        "monthlyCents": 5000,
+        "firstYearCents": 60000,
+        "facts": {
+          "baseline": "$69.00",
+          "current": "$119.00",
+          "increase": "$50.00",
+          "yearly": "$600.00",
+          "payee": "TillPoint POS"
+        },
+        "evidence": [
+          {
+            "source": "expenses",
+            "rowId": "exp-0072",
+            "label": "TillPoint POS · Jul 1 · $69.00",
+            "amountCents": 6900,
+            "date": "2026-07-01"
+          },
+          {
+            "source": "expenses",
+            "rowId": "exp-0107",
+            "label": "TillPoint POS · Aug 1 · $119.00",
+            "amountCents": 11900,
+            "date": "2026-08-01"
+          },
+          {
+            "source": "expenses",
+            "rowId": "exp-0177",
+            "label": "TillPoint POS · Oct 1 · $119.00",
+            "amountCents": 11900,
+            "date": "2026-10-01"
+          }
+        ],
+        "fix": {
+          "type": "plan_downgrade",
+          "to": "vendor+tillpoint-pos@example.com"
+        }
+      },
+      {
+        "id": "find-price-HB-12",
+        "kind": "margin_erosion",
+        "room": "stockroom",
+        "agent": "scout",
+        "title": "House Blend 12oz margin fell from 46.9% to 31.3%",
+        "detail": "House Blend 12oz cost rose from $8.50 to $11.00 (+29.4%) while the price stayed at $16.00, so the margin fell 15.6 points. At $17.00, and assuming the last 3 months of volume holds, that is $80.00 a month.",
+        "oneTimeCents": 0,
+        "monthlyCents": 8000,
+        "firstYearCents": 96000,
+        "facts": {
+          "oldCost": "$8.50",
+          "newCost": "$11.00",
+          "price": "$16.00",
+          "recommended": "$17.00",
+          "monthly": "$80.00",
+          "yearly": "$960.00",
+          "sku": "HB-12"
+        },
+        "evidence": [
+          {
+            "source": "catalog",
+            "rowId": "HB-12",
+            "label": "House Blend 12oz · cost $8.50 -> $11.00 · price $16.00",
+            "amountCents": 1600
+          },
+          {
+            "source": "sales",
+            "rowId": "sku-HB-12",
+            "label": "240 sold over the last 3 months"
+          },
+          {
+            "source": "competitors",
+            "rowId": "comp-HB-12",
+            "label": "Second Wave Coffee $18.00 · Tidepool Coffee $19.00 · Corner Cup $20.00"
+          }
+        ],
+        "fix": {
+          "type": "price_change",
+          "sku": "HB-12",
+          "fromCents": 1600,
+          "toCents": 1700
+        }
+      },
+      {
+        "id": "find-price-CB-64",
+        "kind": "underpriced",
+        "room": "shop_floor",
+        "agent": "scout",
+        "title": "Cold Brew Growler 64oz is 26.3% under the competitor median",
+        "detail": "Cold Brew Growler 64oz sells for $14.00 against a competitor median of $19.00. At $17.00, a dollar under the cheapest competitor, and assuming the last 3 months of volume holds, that is $150.00 a month.",
+        "oneTimeCents": 0,
+        "monthlyCents": 15000,
+        "firstYearCents": 180000,
+        "facts": {
+          "price": "$14.00",
+          "median": "$19.00",
+          "recommended": "$17.00",
+          "monthly": "$150.00",
+          "yearly": "$1,800.00",
+          "sku": "CB-64"
+        },
+        "evidence": [
+          {
+            "source": "catalog",
+            "rowId": "CB-64",
+            "label": "Cold Brew Growler 64oz · cost $6.00 · price $14.00",
+            "amountCents": 1400
+          },
+          {
+            "source": "sales",
+            "rowId": "sku-CB-64",
+            "label": "150 sold over the last 3 months"
+          },
+          {
+            "source": "competitors",
+            "rowId": "comp-CB-64",
+            "label": "Second Wave Coffee $18.00 · Tidepool Coffee $19.00 · Corner Cup $21.00"
+          }
+        ],
+        "fix": {
+          "type": "price_change",
+          "sku": "CB-64",
+          "fromCents": 1400,
+          "toCents": 1700
+        }
+      }
+    ],
+    "fixes": [
+      {
+        "id": "fix-find-dup-exp-0189",
+        "findingId": "find-dup-exp-0189",
+        "type": "refund_request",
+        "status": "sent",
+        "draftedBy": "felix",
+        "to": "vendor+ridgeline-roasters@example.com",
+        "subject": "Invoice RR-1182 paid twice — refund request",
+        "body": "Hi Ridgeline Roasters,\n\nOur records show invoice RR-1182 was paid on Oct 3 and again on Oct 7, for $1,240.00 each time. It looks like the second payment was a duplicate rather than a credit against a later order.\n\nCould you refund $1,240.00, or apply it to the next delivery if that is easier?\n\nThanks,\nFogline Coffee",
+        "sentVia": "simulated"
+      },
+      {
+        "id": "fix-find-sub-tillpoint-pos",
+        "findingId": "find-sub-tillpoint-pos",
+        "type": "plan_downgrade",
+        "status": "sent",
+        "draftedBy": "felix",
+        "to": "vendor+tillpoint-pos@example.com",
+        "subject": "TillPoint POS — request to return to the $69.00 tier",
+        "body": "Hi TillPoint POS,\n\nOur plan went from $69.00 to $119.00 a month, an increase of $50.00 a month. We have not needed the added features, so we would like to return to the $69.00 tier.\n\nOver a year that difference is $600.00, so we would rather downgrade than keep paying for capacity we do not use.\n\nCould you move the account back and confirm the date it takes effect?\n\nThanks,\nFogline Coffee",
+        "sentVia": "simulated"
+      },
+      {
+        "id": "fix-find-price-HB-12",
+        "findingId": "find-price-HB-12",
+        "type": "price_change",
+        "status": "applied",
+        "draftedBy": "felix",
+        "priceChange": {
+          "sku": "HB-12",
+          "fromCents": 1600,
+          "toCents": 1700
+        }
+      },
+      {
+        "id": "fix-find-price-CB-64",
+        "findingId": "find-price-CB-64",
+        "type": "price_change",
+        "status": "applied",
+        "draftedBy": "felix",
+        "priceChange": {
+          "sku": "CB-64",
+          "fromCents": 1400,
+          "toCents": 1700
+        }
+      }
+    ],
+    "totals": {
+      "leakingCents": 0,
+      "recoveredCents": 460000,
+      "oneTimeCents": 124000,
+      "monthlyCents": 28000,
+      "findings": 4
+    },
+    "createdAt": "2026-11-18T17:42:21.569Z",
+    "lastSeq": 61
+  },
+  "events": [
+    {
+      "at": "2026-11-18T17:42:21.569Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "run.created",
+      "data": {
+        "shop": {
+          "id": "shop_run_mwmesfap_91f703",
+          "name": "Fogline Coffee",
+          "city": "San Francisco, CA",
+          "fictional": true,
+          "counts": {
+            "expenses": 214,
+            "sales": 1986,
+            "products": 12
+          },
+          "products": [
+            {
+              "sku": "HB-12",
+              "name": "House Blend 12oz",
+              "priceCents": 1600
+            },
+            {
+              "sku": "CB-64",
+              "name": "Cold Brew Growler 64oz",
+              "priceCents": 1400
+            },
+            {
+              "sku": "OL-16",
+              "name": "Oat Latte 16oz",
+              "priceCents": 575
+            },
+            {
+              "sku": "ES-02",
+              "name": "Espresso Double",
+              "priceCents": 325
+            },
+            {
+              "sku": "AM-12",
+              "name": "Americano 12oz",
+              "priceCents": 375
+            },
+            {
+              "sku": "CP-16",
+              "name": "Cappuccino 16oz",
+              "priceCents": 475
+            },
+            {
+              "sku": "MC-16",
+              "name": "Mocha 16oz",
+              "priceCents": 525
+            },
+            {
+              "sku": "DR-12",
+              "name": "Drip Coffee 12oz",
+              "priceCents": 275
+            },
+            {
+              "sku": "CR-09",
+              "name": "Butter Croissant",
+              "priceCents": 450
+            },
+            {
+              "sku": "BG-05",
+              "name": "Bagel and Cream Cheese",
+              "priceCents": 400
+            },
+            {
+              "sku": "MF-06",
+              "name": "Morning Bun",
+              "priceCents": 475
+            },
+            {
+              "sku": "SB-08",
+              "name": "Seasonal Beans 1lb",
+              "priceCents": 2200
+            }
+          ],
+          "suppliers": [
+            "Alder and Oak Supply",
+            "Bayside Beverage",
+            "Ferry Building Produce",
+            "Fog City Paper",
+            "Mission Mill Bakery",
+            "Pacific Cup Co.",
+            "Ridgeline Roasters",
+            "Salt Flats Syrup",
+            "Tidewater Dairy"
+          ],
+          "subscriptions": [
+            "Beanstalk Inventory",
+            "Harbor Mutual Insurance",
+            "LedgerLite Accounting",
+            "ShiftPilot Scheduling",
+            "TillPoint POS"
+          ]
+        },
+        "crew": "mock"
+      },
+      "seq": 1
+    },
+    {
+      "at": "2026-11-18T17:42:21.569Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "run.started",
+      "data": {
+        "crew": "mock"
+      },
+      "seq": 2
+    },
+    {
+      "at": "2026-11-18T17:42:21.590Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_in",
+      "data": {},
+      "agent": "penny",
+      "room": "front_desk",
+      "seq": 3
+    },
+    {
+      "at": "2026-11-18T17:42:21.591Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "front_desk",
+        "to": "front_desk"
+      },
+      "agent": "penny",
+      "room": "front_desk",
+      "seq": 4
+    },
+    {
+      "at": "2026-11-18T17:42:21.639Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_in",
+      "data": {},
+      "agent": "dock",
+      "room": "front_desk",
+      "seq": 5
+    },
+    {
+      "at": "2026-11-18T17:42:21.639Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "front_desk",
+        "to": "loading_dock"
+      },
+      "agent": "dock",
+      "room": "loading_dock",
+      "seq": 6
+    },
+    {
+      "at": "2026-11-18T17:42:21.688Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_in",
+      "data": {},
+      "agent": "audrey",
+      "room": "front_desk",
+      "seq": 7
+    },
+    {
+      "at": "2026-11-18T17:42:21.688Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "front_desk",
+        "to": "back_office"
+      },
+      "agent": "audrey",
+      "room": "back_office",
+      "seq": 8
+    },
+    {
+      "at": "2026-11-18T17:42:21.736Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_in",
+      "data": {},
+      "agent": "sid",
+      "room": "front_desk",
+      "seq": 9
+    },
+    {
+      "at": "2026-11-18T17:42:21.737Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "front_desk",
+        "to": "server_closet"
+      },
+      "agent": "sid",
+      "room": "server_closet",
+      "seq": 10
+    },
+    {
+      "at": "2026-11-18T17:42:21.785Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_in",
+      "data": {},
+      "agent": "scout",
+      "room": "front_desk",
+      "seq": 11
+    },
+    {
+      "at": "2026-11-18T17:42:21.785Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "front_desk",
+        "to": "shop_floor"
+      },
+      "agent": "scout",
+      "room": "shop_floor",
+      "seq": 12
+    },
+    {
+      "at": "2026-11-18T17:42:21.834Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_in",
+      "data": {},
+      "agent": "felix",
+      "room": "front_desk",
+      "seq": 13
+    },
+    {
+      "at": "2026-11-18T17:42:21.834Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "front_desk",
+        "to": "mailroom"
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 14
+    },
+    {
+      "at": "2026-11-18T17:42:21.883Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Shift started. Six on the floor.",
+        "progress": 10
+      },
+      "agent": "penny",
+      "room": "front_desk",
+      "seq": 15
+    },
+    {
+      "at": "2026-11-18T17:42:21.923Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Checking the owner's exports are readable",
+        "progress": 40
+      },
+      "agent": "dock",
+      "room": "loading_dock",
+      "seq": 16
+    },
+    {
+      "at": "2026-11-18T17:42:21.998Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "intake.done",
+      "data": {
+        "counts": {
+          "expenses": 214,
+          "sales": 1986,
+          "products": 12
+        },
+        "products": [
+          {
+            "sku": "HB-12",
+            "name": "House Blend 12oz",
+            "priceCents": 1600
+          },
+          {
+            "sku": "CB-64",
+            "name": "Cold Brew Growler 64oz",
+            "priceCents": 1400
+          },
+          {
+            "sku": "OL-16",
+            "name": "Oat Latte 16oz",
+            "priceCents": 575
+          },
+          {
+            "sku": "ES-02",
+            "name": "Espresso Double",
+            "priceCents": 325
+          },
+          {
+            "sku": "AM-12",
+            "name": "Americano 12oz",
+            "priceCents": 375
+          },
+          {
+            "sku": "CP-16",
+            "name": "Cappuccino 16oz",
+            "priceCents": 475
+          },
+          {
+            "sku": "MC-16",
+            "name": "Mocha 16oz",
+            "priceCents": 525
+          },
+          {
+            "sku": "DR-12",
+            "name": "Drip Coffee 12oz",
+            "priceCents": 275
+          },
+          {
+            "sku": "CR-09",
+            "name": "Butter Croissant",
+            "priceCents": 450
+          },
+          {
+            "sku": "BG-05",
+            "name": "Bagel and Cream Cheese",
+            "priceCents": 400
+          },
+          {
+            "sku": "MF-06",
+            "name": "Morning Bun",
+            "priceCents": 475
+          },
+          {
+            "sku": "SB-08",
+            "name": "Seasonal Beans 1lb",
+            "priceCents": 2200
+          }
+        ],
+        "suppliers": [
+          "Alder and Oak Supply",
+          "Bayside Beverage",
+          "Ferry Building Produce",
+          "Fog City Paper",
+          "Mission Mill Bakery",
+          "Pacific Cup Co.",
+          "Ridgeline Roasters",
+          "Salt Flats Syrup",
+          "Tidewater Dairy"
+        ],
+        "subscriptions": [
+          "Beanstalk Inventory",
+          "Harbor Mutual Insurance",
+          "LedgerLite Accounting",
+          "ShiftPilot Scheduling",
+          "TillPoint POS"
+        ]
+      },
+      "agent": "dock",
+      "room": "loading_dock",
+      "seq": 17
+    },
+    {
+      "at": "2026-11-18T17:42:21.999Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "214 expenses, 1986 sales lines, 12 products checked in.",
+        "progress": 100
+      },
+      "agent": "dock",
+      "room": "loading_dock",
+      "seq": 18
+    },
+    {
+      "at": "2026-11-18T17:42:22.048Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Checking the bills for repeats",
+        "progress": 30
+      },
+      "agent": "audrey",
+      "room": "back_office",
+      "seq": 19
+    },
+    {
+      "at": "2026-11-18T17:42:22.048Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Lining up six months of monthly charges",
+        "progress": 30
+      },
+      "agent": "sid",
+      "room": "server_closet",
+      "seq": 20
+    },
+    {
+      "at": "2026-11-18T17:42:22.048Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "shop_floor",
+        "to": "street"
+      },
+      "agent": "scout",
+      "room": "street",
+      "seq": 21
+    },
+    {
+      "at": "2026-11-18T17:42:22.048Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Out reading the boards across the street",
+        "progress": 30
+      },
+      "agent": "scout",
+      "room": "street",
+      "seq": 22
+    },
+    {
+      "at": "2026-11-18T17:42:22.149Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Matching references and dates",
+        "progress": 70
+      },
+      "agent": "audrey",
+      "room": "back_office",
+      "seq": 23
+    },
+    {
+      "at": "2026-11-18T17:42:22.162Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Comparing each plan to its baseline",
+        "progress": 70
+      },
+      "agent": "sid",
+      "room": "server_closet",
+      "seq": 24
+    },
+    {
+      "at": "2026-11-18T17:42:22.169Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.moved",
+      "data": {
+        "from": "street",
+        "to": "shop_floor"
+      },
+      "agent": "scout",
+      "room": "shop_floor",
+      "seq": 25
+    },
+    {
+      "at": "2026-11-18T17:42:22.170Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Checking our prices against cost",
+        "progress": 70
+      },
+      "agent": "scout",
+      "room": "shop_floor",
+      "seq": 26
+    },
+    {
+      "at": "2026-11-18T17:42:22.283Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "finding.created",
+      "data": {
+        "finding": {
+          "id": "find-dup-exp-0189",
+          "kind": "duplicate_payment",
+          "room": "back_office",
+          "agent": "audrey",
+          "title": "Invoice RR-1182 paid twice",
+          "detail": "Invoice RR-1182 was paid on Oct 3 and again on Oct 7 for $1,240.00 each time, under the same reference. Assuming the second payment was not a credit against a later order, $1,240.00 is owed back.",
+          "oneTimeCents": 124000,
+          "monthlyCents": 0,
+          "firstYearCents": 124000,
+          "facts": {
+            "amount": "$1,240.00",
+            "invoice": "RR-1182",
+            "paidOn": "Oct 3",
+            "againOn": "Oct 7",
+            "payee": "Ridgeline Roasters"
+          },
+          "evidence": [
+            {
+              "source": "expenses",
+              "rowId": "exp-0180",
+              "label": "Ridgeline Roasters · RR-1182 · Oct 3 · $1,240.00",
+              "amountCents": 124000,
+              "date": "2026-10-03"
+            },
+            {
+              "source": "expenses",
+              "rowId": "exp-0189",
+              "label": "Ridgeline Roasters · RR-1182 · Oct 7 · $1,240.00",
+              "amountCents": 124000,
+              "date": "2026-10-07"
+            }
+          ],
+          "fix": {
+            "type": "refund_request",
+            "to": "vendor+ridgeline-roasters@example.com"
+          }
+        }
+      },
+      "agent": "audrey",
+      "room": "back_office",
+      "seq": 27
+    },
+    {
+      "at": "2026-11-18T17:42:22.284Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "1 found, $1,240.00 a year.",
+        "progress": 100
+      },
+      "agent": "audrey",
+      "room": "back_office",
+      "seq": 28
+    },
+    {
+      "at": "2026-11-18T17:42:22.292Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "finding.created",
+      "data": {
+        "finding": {
+          "id": "find-sub-tillpoint-pos",
+          "kind": "subscription_creep",
+          "room": "server_closet",
+          "agent": "sid",
+          "title": "TillPoint POS went from $69.00 to $119.00 a month in August",
+          "detail": "TillPoint POS charged $69.00 a month to start, then $119.00 from August on. Assuming the cheaper tier still covers what the shop uses, the extra $50.00 a month ($600.00 a year) is recoverable by downgrading.",
+          "oneTimeCents": 0,
+          "monthlyCents": 5000,
+          "firstYearCents": 60000,
+          "facts": {
+            "baseline": "$69.00",
+            "current": "$119.00",
+            "increase": "$50.00",
+            "yearly": "$600.00",
+            "payee": "TillPoint POS"
+          },
+          "evidence": [
+            {
+              "source": "expenses",
+              "rowId": "exp-0072",
+              "label": "TillPoint POS · Jul 1 · $69.00",
+              "amountCents": 6900,
+              "date": "2026-07-01"
+            },
+            {
+              "source": "expenses",
+              "rowId": "exp-0107",
+              "label": "TillPoint POS · Aug 1 · $119.00",
+              "amountCents": 11900,
+              "date": "2026-08-01"
+            },
+            {
+              "source": "expenses",
+              "rowId": "exp-0177",
+              "label": "TillPoint POS · Oct 1 · $119.00",
+              "amountCents": 11900,
+              "date": "2026-10-01"
+            }
+          ],
+          "fix": {
+            "type": "plan_downgrade",
+            "to": "vendor+tillpoint-pos@example.com"
+          }
+        }
+      },
+      "agent": "sid",
+      "room": "server_closet",
+      "seq": 29
+    },
+    {
+      "at": "2026-11-18T17:42:22.292Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "1 found, $600.00 a year.",
+        "progress": 100
+      },
+      "agent": "sid",
+      "room": "server_closet",
+      "seq": 30
+    },
+    {
+      "at": "2026-11-18T17:42:22.305Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "finding.created",
+      "data": {
+        "finding": {
+          "id": "find-price-HB-12",
+          "kind": "margin_erosion",
+          "room": "stockroom",
+          "agent": "scout",
+          "title": "House Blend 12oz margin fell from 46.9% to 31.3%",
+          "detail": "House Blend 12oz cost rose from $8.50 to $11.00 (+29.4%) while the price stayed at $16.00, so the margin fell 15.6 points. At $17.00, and assuming the last 3 months of volume holds, that is $80.00 a month.",
+          "oneTimeCents": 0,
+          "monthlyCents": 8000,
+          "firstYearCents": 96000,
+          "facts": {
+            "oldCost": "$8.50",
+            "newCost": "$11.00",
+            "price": "$16.00",
+            "recommended": "$17.00",
+            "monthly": "$80.00",
+            "yearly": "$960.00",
+            "sku": "HB-12"
+          },
+          "evidence": [
+            {
+              "source": "catalog",
+              "rowId": "HB-12",
+              "label": "House Blend 12oz · cost $8.50 -> $11.00 · price $16.00",
+              "amountCents": 1600
+            },
+            {
+              "source": "sales",
+              "rowId": "sku-HB-12",
+              "label": "240 sold over the last 3 months"
+            },
+            {
+              "source": "competitors",
+              "rowId": "comp-HB-12",
+              "label": "Second Wave Coffee $18.00 · Tidepool Coffee $19.00 · Corner Cup $20.00"
+            }
+          ],
+          "fix": {
+            "type": "price_change",
+            "sku": "HB-12",
+            "fromCents": 1600,
+            "toCents": 1700
+          }
+        }
+      },
+      "agent": "scout",
+      "room": "stockroom",
+      "seq": 31
+    },
+    {
+      "at": "2026-11-18T17:42:22.305Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "finding.created",
+      "data": {
+        "finding": {
+          "id": "find-price-CB-64",
+          "kind": "underpriced",
+          "room": "shop_floor",
+          "agent": "scout",
+          "title": "Cold Brew Growler 64oz is 26.3% under the competitor median",
+          "detail": "Cold Brew Growler 64oz sells for $14.00 against a competitor median of $19.00. At $17.00, a dollar under the cheapest competitor, and assuming the last 3 months of volume holds, that is $150.00 a month.",
+          "oneTimeCents": 0,
+          "monthlyCents": 15000,
+          "firstYearCents": 180000,
+          "facts": {
+            "price": "$14.00",
+            "median": "$19.00",
+            "recommended": "$17.00",
+            "monthly": "$150.00",
+            "yearly": "$1,800.00",
+            "sku": "CB-64"
+          },
+          "evidence": [
+            {
+              "source": "catalog",
+              "rowId": "CB-64",
+              "label": "Cold Brew Growler 64oz · cost $6.00 · price $14.00",
+              "amountCents": 1400
+            },
+            {
+              "source": "sales",
+              "rowId": "sku-CB-64",
+              "label": "150 sold over the last 3 months"
+            },
+            {
+              "source": "competitors",
+              "rowId": "comp-CB-64",
+              "label": "Second Wave Coffee $18.00 · Tidepool Coffee $19.00 · Corner Cup $21.00"
+            }
+          ],
+          "fix": {
+            "type": "price_change",
+            "sku": "CB-64",
+            "fromCents": 1400,
+            "toCents": 1700
+          }
+        }
+      },
+      "agent": "scout",
+      "room": "shop_floor",
+      "seq": 32
+    },
+    {
+      "at": "2026-11-18T17:42:22.305Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "2 found, $2,760.00 a year.",
+        "progress": 100
+      },
+      "agent": "scout",
+      "room": "shop_floor",
+      "seq": 33
+    },
+    {
+      "at": "2026-11-18T17:42:22.346Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Drafting 4 fixes",
+        "progress": 20
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 34
+    },
+    {
+      "at": "2026-11-18T17:42:22.412Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.drafted",
+      "data": {
+        "fix": {
+          "id": "fix-find-dup-exp-0189",
+          "findingId": "find-dup-exp-0189",
+          "type": "refund_request",
+          "status": "drafted",
+          "draftedBy": "felix",
+          "to": "vendor+ridgeline-roasters@example.com",
+          "subject": "Invoice RR-1182 paid twice — refund request",
+          "body": "Hi Ridgeline Roasters,\n\nOur records show invoice RR-1182 was paid on Oct 3 and again on Oct 7, for $1,240.00 each time. It looks like the second payment was a duplicate rather than a credit against a later order.\n\nCould you refund $1,240.00, or apply it to the next delivery if that is easier?\n\nThanks,\nFogline Coffee"
+        }
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 35
+    },
+    {
+      "at": "2026-11-18T17:42:22.413Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Drafted 1 of 4",
+        "progress": 25
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 36
+    },
+    {
+      "at": "2026-11-18T17:42:22.478Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.drafted",
+      "data": {
+        "fix": {
+          "id": "fix-find-sub-tillpoint-pos",
+          "findingId": "find-sub-tillpoint-pos",
+          "type": "plan_downgrade",
+          "status": "drafted",
+          "draftedBy": "felix",
+          "to": "vendor+tillpoint-pos@example.com",
+          "subject": "TillPoint POS — request to return to the $69.00 tier",
+          "body": "Hi TillPoint POS,\n\nOur plan went from $69.00 to $119.00 a month, an increase of $50.00 a month. We have not needed the added features, so we would like to return to the $69.00 tier.\n\nOver a year that difference is $600.00, so we would rather downgrade than keep paying for capacity we do not use.\n\nCould you move the account back and confirm the date it takes effect?\n\nThanks,\nFogline Coffee"
+        }
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 37
+    },
+    {
+      "at": "2026-11-18T17:42:22.479Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Drafted 2 of 4",
+        "progress": 50
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 38
+    },
+    {
+      "at": "2026-11-18T17:42:22.544Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.drafted",
+      "data": {
+        "fix": {
+          "id": "fix-find-price-HB-12",
+          "findingId": "find-price-HB-12",
+          "type": "price_change",
+          "status": "drafted",
+          "draftedBy": "felix",
+          "priceChange": {
+            "sku": "HB-12",
+            "fromCents": 1600,
+            "toCents": 1700
+          }
+        }
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 39
+    },
+    {
+      "at": "2026-11-18T17:42:22.545Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Drafted 3 of 4",
+        "progress": 75
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 40
+    },
+    {
+      "at": "2026-11-18T17:42:22.610Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.drafted",
+      "data": {
+        "fix": {
+          "id": "fix-find-price-CB-64",
+          "findingId": "find-price-CB-64",
+          "type": "price_change",
+          "status": "drafted",
+          "draftedBy": "felix",
+          "priceChange": {
+            "sku": "CB-64",
+            "fromCents": 1400,
+            "toCents": 1700
+          }
+        }
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 41
+    },
+    {
+      "at": "2026-11-18T17:42:22.610Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "approval.requested",
+      "data": {
+        "fixIds": [
+          "fix-find-dup-exp-0189",
+          "fix-find-sub-tillpoint-pos",
+          "fix-find-price-HB-12",
+          "fix-find-price-CB-64"
+        ]
+      },
+      "room": "front_desk",
+      "seq": 42
+    },
+    {
+      "at": "2026-11-18T17:42:22.611Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Drafted 4 of 4",
+        "progress": 100
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 43
+    },
+    {
+      "at": "2026-11-18T17:42:22.644Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Four fixes on the owner's desk. Waiting on a decision.",
+        "progress": 60
+      },
+      "agent": "penny",
+      "room": "front_desk",
+      "seq": 44
+    },
+    {
+      "at": "2026-11-18T17:42:22.647Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.approved",
+      "data": {
+        "fixId": "fix-find-dup-exp-0189"
+      },
+      "room": "front_desk",
+      "seq": 45
+    },
+    {
+      "at": "2026-11-18T17:42:22.648Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.approved",
+      "data": {
+        "fixId": "fix-find-sub-tillpoint-pos"
+      },
+      "room": "front_desk",
+      "seq": 46
+    },
+    {
+      "at": "2026-11-18T17:42:22.649Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.approved",
+      "data": {
+        "fixId": "fix-find-price-HB-12"
+      },
+      "room": "front_desk",
+      "seq": 47
+    },
+    {
+      "at": "2026-11-18T17:42:22.650Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.applied",
+      "data": {
+        "fixId": "fix-find-price-HB-12",
+        "sku": "HB-12",
+        "fromCents": 1600,
+        "toCents": 1700
+      },
+      "room": "shop_floor",
+      "seq": 48
+    },
+    {
+      "at": "2026-11-18T17:42:22.653Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.approved",
+      "data": {
+        "fixId": "fix-find-price-CB-64"
+      },
+      "room": "front_desk",
+      "seq": 49
+    },
+    {
+      "at": "2026-11-18T17:42:22.653Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.applied",
+      "data": {
+        "fixId": "fix-find-price-CB-64",
+        "sku": "CB-64",
+        "fromCents": 1400,
+        "toCents": 1700
+      },
+      "room": "shop_floor",
+      "seq": 50
+    },
+    {
+      "at": "2026-11-18T17:42:22.690Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "Sending 2 emails",
+        "progress": 60
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 51
+    },
+    {
+      "at": "2026-11-18T17:42:22.747Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.sent",
+      "data": {
+        "fixId": "fix-find-dup-exp-0189",
+        "via": "simulated",
+        "to": "vendor+ridgeline-roasters@example.com"
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 52
+    },
+    {
+      "at": "2026-11-18T17:42:22.805Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "fix.sent",
+      "data": {
+        "fixId": "fix-find-sub-tillpoint-pos",
+        "via": "simulated",
+        "to": "vendor+tillpoint-pos@example.com"
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 53
+    },
+    {
+      "at": "2026-11-18T17:42:22.806Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.status",
+      "data": {
+        "message": "2 sent, 2 prices changed.",
+        "progress": 100
+      },
+      "agent": "felix",
+      "room": "mailroom",
+      "seq": 54
+    },
+    {
+      "at": "2026-11-18T17:42:22.872Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_out",
+      "data": {
+        "summary": "214 expenses, 1986 sales lines checked in."
+      },
+      "agent": "dock",
+      "seq": 55
+    },
+    {
+      "at": "2026-11-18T17:42:22.901Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_out",
+      "data": {
+        "summary": "1 bills paid twice. $1,240.00 a year."
+      },
+      "agent": "audrey",
+      "seq": 56
+    },
+    {
+      "at": "2026-11-18T17:42:22.931Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_out",
+      "data": {
+        "summary": "1 plans that crept up. $600.00 a year."
+      },
+      "agent": "sid",
+      "seq": 57
+    },
+    {
+      "at": "2026-11-18T17:42:22.959Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_out",
+      "data": {
+        "summary": "2 prices out of line. $2,760.00 a year."
+      },
+      "agent": "scout",
+      "seq": 58
+    },
+    {
+      "at": "2026-11-18T17:42:22.988Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_out",
+      "data": {
+        "summary": "2 sent, 2 prices changed."
+      },
+      "agent": "felix",
+      "seq": 59
+    },
+    {
+      "at": "2026-11-18T17:42:23.017Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "agent.clocked_out",
+      "data": {
+        "summary": "Shift closed. $4,600.00 recovered in the first year."
+      },
+      "agent": "penny",
+      "seq": 60
+    },
+    {
+      "at": "2026-11-18T17:42:23.018Z",
+      "runId": "run_mwmesfap_91f703",
+      "type": "run.finished",
+      "data": {
+        "totals": {
+          "leakingCents": 0,
+          "recoveredCents": 460000,
+          "oneTimeCents": 124000,
+          "monthlyCents": 28000,
+          "findings": 4
+        }
+      },
+      "agent": "penny",
+      "room": "front_desk",
+      "seq": 61
+    }
+  ]
+}
