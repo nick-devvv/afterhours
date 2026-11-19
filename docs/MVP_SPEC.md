@@ -55,7 +55,7 @@ Afterhours is a new project. It keeps Plumb's best idea (a visible crew of AI wo
 | A mock crew for the demo | **No mock crew.** Both crews do real work |
 | Approvals at the owner's desk on screen | Approvals on screen **and by text** ("YES 1") |
 | One-shot run | **Nightly runs and a morning brief**; each night is a diff |
-| New crew: Penny, Dock, Audrey, Sid, Scout, Felix | New crew: **Rosa, Vic, June, Otto, Lou, Fern** |
+| Crew: Penny, Dock, Audrey, Sid, Scout, Felix | New crew: **Rosa, Vic, June, Otto, Lou, Fern** |
 
 What we reuse: Nick's three.js shop engine (`app/_shop/engine/`), the director pattern (events play one beat at a time), the owner's desk, sounds. What we don't reuse: Plumb's backend code, sample data or ClawMax files. Darian builds the backend fresh today with his Grok Bot. The README says plainly that the 3D engine started in Plumb.
 

@@ -11,4 +11,8 @@ Built with Grok Bot. The full plan is in [`docs/MVP_SPEC.md`](docs/MVP_SPEC.md).
 | `rayyan/deck` | Rayyan | The pitch deck, demo script, Q&A prep, Grok Bot proof ([`docs/DECK.md`](docs/DECK.md)) |
 | `main` | everyone, via PR | What Vercel deploys |
 
-Read [`AGENTS.md`](AGENTS.md) before you (or your Bot) touch anything.
+Read [`AGENTS.md`](AGENTS.md) before you (or your Bot) touch anything. **Due 4:45 PM**: the time plan is in [`docs/MVP_SPEC.md`](docs/MVP_SPEC.md) section 13.
+
+More: [`docs/GROK_BOT.md`](docs/GROK_BOT.md) (building with Grok Bot and running the crew on it) · [`grokbot/BOTS.md`](grokbot/BOTS.md) (the crew's job descriptions) · [`docs/DECISIONS.md`](docs/DECISIONS.md) · [`docs/BUILD_LOG.md`](docs/BUILD_LOG.md)
+
+The 3D shop engine started in our earlier project, Plumb (Nov 18). Everything else is built today.
