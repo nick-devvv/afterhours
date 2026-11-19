@@ -12,6 +12,7 @@ export type AgentId =
   | 'june'  // listener: reviews and X posts
   | 'otto'  // storefront: website and listings
   | 'lou'   // books: duplicate bills, creeping subscriptions, margins (P1)
+  | 'dot'   // file clerk: sorts whatever the owner uploads into expenses / sales / catalog
   | 'fern'; // fixer: drafts the fixes and the replies
 
 /** Rooms in the 3D shop. Same floor plan as Plumb's shop. */
@@ -99,6 +100,30 @@ export interface Competitor {
   /** Their prices. matchesItemId pairs an item with one of ours of the same kind and size. */
   items: (MenuItem & { matchesItemId?: string })[];
   sourceIds: string[];
+}
+
+// ---------- The owner's files (Dot sorts them; Lou reads them) ----------
+
+/** What a file turned out to be. 'skipped' = we can't read that format yet (PDF, image, Excel). */
+export type BooksKind = 'expenses' | 'sales' | 'catalog' | 'other' | 'skipped';
+
+/** Our column names Dot maps the owner's headers to. */
+export type BooksField =
+  | 'date' | 'payee' | 'amount' | 'reference' | 'category'
+  | 'sku' | 'item' | 'quantity' | 'unit_price' | 'unit_cost' | 'net_sales';
+
+export interface SortedFile {
+  id: string;              // "file_ab12"
+  name: string;            // the owner's filename, as uploaded
+  bytes: number;
+  kind: BooksKind;
+  confidence: 'high' | 'medium' | 'low';
+  rows: number;
+  /** our field → the owner's header, e.g. { amount: "Debit", payee: "Vendor Name" } */
+  columns: Partial<Record<BooksField, string>>;
+  reason: string;          // one plain sentence: "Has Date, Vendor and Amount columns"
+  sortedBy: 'code' | 'grok';
+  sourceId?: string;       // the 'books' source registered for this file
 }
 
 // ---------- Findings and fixes ----------
@@ -191,6 +216,8 @@ export interface Run {
   fixes: Fix[];
   totals: Totals;
   ownerId?: string;
+  /** Files the owner uploaded, as Dot sorted them. */
+  books?: SortedFile[];
   usage: Usage;
   createdAt: string;
   finishedAt?: string;
@@ -238,6 +265,7 @@ export type EventType =
   | 'finding.created' | 'finding.updated'
   | 'fix.drafted' | 'approval.requested'
   | 'fix.approved' | 'fix.rejected' | 'fix.applied' | 'fix.sent' | 'fix.failed'
+  | 'file.sorted'
   | 'text.sent' | 'text.received'
   | 'agent.clocked_out' | 'run.finished' | 'error';
 

@@ -100,7 +100,8 @@ Contacting the scanned business or anyone at it. Logging in to anyone's accounts
 | `vic` | Vic, price checker | Street → shop floor | Finds 2–4 nearby competitors, reads their menus, pairs comparable items | `add_source`, `add_competitor`, `check_prices`, `status`, `think`, `done` | Competitor websites, online menus, delivery-app menus |
 | `june` | June, listener | Shop floor | Reads recent reviews and X posts, groups complaints into themes with quotes | `add_source`, `report_review_theme`, `status`, `think`, `done` | Review pages, X search (Grok's own) |
 | `otto` | Otto, storefront | Server closet | Runs our site checker; compares hours, phone and address across listings | `check_site`, `add_source`, `report_listing_issue`, `status`, `done` | The website (our checker fetches it), maps listing, directories |
-| `lou` | Lou, bookkeeper (P1) | Back office | Scans the owner's exports | `scan_books`, `status`, `done` | Uploaded CSVs |
+| `dot` | Dot, file clerk | Stockroom | Takes **everything the owner sends at once** (any filenames, any order) and sorts each file into expenses, sales, catalog, other or skipped, with a column mapping. Code sorts the clear ones; Grok only sees the ambiguous ones, and its mapping is checked against the real headers | runs inside `POST /api/books` | Uploaded CSV / TSV / TXT / JSON (PDF, images, Excel are listed as skipped with a reason) |
+| `lou` | Lou, bookkeeper (P1) | Back office | Scans the owner's exports, as Dot sorted them | `scan_books`, `status`, `done` | Dot's sorted files |
 | `fern` | Fern, fixer | Mailroom | Drafts one fix per finding: new price, review reply, listing update, site fix | `get_run`, `draft_fix`, `status`, `done` | Findings and their `facts` |
 
 **The shift, in order (a DAG, run by our backend for both crews):**
@@ -225,6 +226,7 @@ The source of truth is [`lib/types.ts`](../lib/types.ts). The parts that matter 
 - **`Finding`**: `impact` is computed by `lib/engine` and says its `basis` (`books`, `estimate` or `none`) and `assumptions`. `facts` holds preformatted figures that drafts must use exactly. At least one `sourceId`.
 - **`Fix`**: has a per-run `number` so the owner can text `YES 2`.
 - **`Run`**: everything for one shift, plus `usage` (real counts of xAI calls, web searches, X posts fetched, pages our checker read).
+- **`SortedFile`**: one uploaded file as Dot sorted it: `kind` (`expenses`, `sales`, `catalog`, `other`, `skipped`), `confidence`, `rows`, `columns` (our field → the owner's header), a one-sentence `reason`, and `sortedBy` (`code` or `grok`). `Run.books` lists them; the rows stay server-side for Lou.
 - **`Owner`** and **`TextMessage`**: the texting side. `verified` is true once the owner has texted us first (Sendblue's free plan requires it) or pressed Start in Telegram.
 
 ---
@@ -250,7 +252,8 @@ All JSON. Errors are `{ "error": { "code", "message" } }` with codes `invalid_re
 | POST | `/api/owner` | `{ name, phone?, channel }` | `{ owner: Owner, verify: { textTo?: string, telegramLink?: string } }`. Shows "Text HI to …" |
 | GET | `/api/owner/:id` | | `Owner` (the setup page polls until `verified`) |
 | GET | `/api/owner/:id/texts?runId=` | | `{ messages: TextMessage[] }` for the phone mirror |
-| POST | `/api/books` (P1) | multipart `runId`, `expenses`, `sales`, `catalog` | `{ ok, rows }`, then Lou starts |
+| POST | `/api/books` | multipart `runId` + **any number of files under any field names** (the owner sends everything; no need to say which is which) | `{ ok, rows, files: SortedFile[] }`. Dot sorts them; emits `file.sorted` per file |
+| GET | `/api/books/:runId/:fileId` | | `{ file: SortedFile, headers, preview }` (first 20 rows). This is the `books` source link |
 
 The UI polls `/events` every 700 ms while a run is live and every 3 s after `run.finished` (texts can still arrive).
 
@@ -312,6 +315,7 @@ Every tool takes `runId` and `agent`. Every tool appends events. Inputs are vali
 | `fix.applied` | `{ fixId, itemId, fromCents, toCents }` | The price tag on the shelf flips; the leak is patched |
 | `fix.sent` | `{ fixId, via }` | Envelope to the mailbox (email) or a clipboard icon (copy) |
 | `fix.failed` | `{ fixId, error }` | Card shakes red with the error |
+| `file.sorted` | `{ file: SortedFile }` | Dot drops the file into the right box in the stockroom (expenses / sales / catalog / other); skipped files go on a "can't read yet" pile |
 | `text.sent` | `{ message }` | Rosa lifts her phone; the bubble appears in the phone mirror |
 | `text.received` | `{ message }` | The phone mirror shows the owner's reply; Rosa reads it |
 | `agent.clocked_out` | `{ summary }` | Coffee break |
