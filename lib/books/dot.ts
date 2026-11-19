@@ -16,7 +16,7 @@ export interface Upload {
 }
 
 const GrokSort = z.object({
-  files: z.array(z.object({ index: z.number().int(), kind: z.enum(['expenses', 'sales', 'catalog', 'other']), columns: z.record(z.string()).default({}), reason: z.string().max(300) })),
+  files: z.array(z.object({ index: z.number().int(), kind: z.enum(['expenses', 'sales', 'catalog', 'other']), columns: z.record(z.string(), z.string()).default({}), reason: z.string().max(300) })),
 });
 
 /** One Grok call for all the files code couldn't place. Returns null if there's no key or the answer is unusable. */

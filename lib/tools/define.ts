@@ -14,6 +14,7 @@ export interface ToolCtx {
   now: Date;
 }
 
+// Works with zod 3.25+ and zod 4 (strictObject exists in both; generics kept loose on purpose).
 export interface ToolDef<S extends z.ZodRawShape = z.ZodRawShape> {
   name: string;
   description: string;
@@ -21,9 +22,9 @@ export interface ToolDef<S extends z.ZodRawShape = z.ZodRawShape> {
   /** Full raw shape incl. runId and agent (MCP registers this). */
   shape: typeof base & S;
   /** Strict object: unknown fields are rejected. */
-  input: z.ZodObject<typeof base & S, 'strict'>;
+  input: z.ZodObject<any, any>;
   /** Input without runId/agent, for the API crew (they're pre-filled). */
-  modelInput: z.ZodObject<S, 'strict'>;
+  modelInput: z.ZodObject<any, any>;
   run(input: z.infer<z.ZodObject<typeof base & S>>, ctx: ToolCtx): Promise<unknown>;
 }
 
@@ -40,8 +41,8 @@ export function defineTool<S extends z.ZodRawShape>(def: {
     description: def.description,
     agents: def.agents,
     shape,
-    input: z.object(shape).strict(),
-    modelInput: z.object(def.input).strict(),
+    input: z.strictObject(shape),
+    modelInput: z.strictObject(def.input),
     run: def.run,
   };
 }
