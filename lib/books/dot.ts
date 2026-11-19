@@ -131,3 +131,14 @@ export async function readSortedRows(runId: string, fileId: string): Promise<Par
   const raw = await kv().get(`books:${runId}:${fileId}`);
   return raw ? (JSON.parse(raw) as ParsedFile) : null;
 }
+
+/** The run's sorted files of one kind, with their rows and column mapping, for Lou. */
+export async function mappedFiles(run: import('../types').Run, kind: 'expenses' | 'sales' | 'catalog') {
+  const out: import('./checks').MappedFile[] = [];
+  for (const f of run.books ?? []) {
+    if (f.kind !== kind || !f.sourceId) continue;
+    const data = await readSortedRows(run.id, f.id);
+    if (data) out.push({ fileId: f.id, sourceId: f.sourceId, name: f.name, columns: f.columns, rows: data.rows });
+  }
+  return out;
+}

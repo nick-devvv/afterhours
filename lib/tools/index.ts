@@ -443,9 +443,32 @@ export const textOwner = defineTool({
   },
 });
 
+export const scanBooks = defineTool({
+  name: 'scan_books',
+  description: "Lou: run one check on the owner's own exports (already sorted by Dot): 'duplicates' (same payee and amount twice), 'subscriptions' (monthly charges that crept up) or 'margins' (unit cost up, margin down). The engine creates the findings.",
+  agents: ['lou'],
+  input: { check: z.enum(['duplicates', 'subscriptions', 'margins']) },
+  async run({ runId, agent, check }) {
+    const { mappedFiles } = await import('../books/dot');
+    const { duplicatePayments, subscriptionCreep, marginErosion } = await import('../books/checks');
+    const run0 = await mustGetRun(runId);
+    const kind = check === 'margins' ? 'catalog' : 'expenses';
+    const files = await mappedFiles(run0, kind);
+    if (!files.length) return { findings: [], note: `No ${kind} file was uploaded, so there's nothing to check.` };
+    const fresh = check === 'duplicates' ? duplicatePayments(files) : check === 'subscriptions' ? subscriptionCreep(files) : marginErosion(files);
+    const { result } = await mutate(runId, ({ run, emit }) => {
+      const titles = new Set(run.findings.map((f) => f.title));
+      const created = fresh.filter((f) => !titles.has(f.title)).map((f) => addFinding(run, f, emit));
+      emit('agent.status', { message: `${check}: ${created.length} finding${created.length === 1 ? '' : 's'} in ${files.reduce((n, f) => n + f.rows.length, 0)} rows`, progress: check === 'margins' ? 95 : check === 'subscriptions' ? 66 : 33 }, { agent, room: 'back_office' });
+      return created.map((f) => ({ id: f.id, title: f.title }));
+    });
+    return { findings: result };
+  },
+});
+
 export const tools: ToolDef<any>[] = [
   getRun, clockIn, status, think, addSource, setBusiness, addMenuItems, addCompetitor, checkPrices,
-  reportReviewTheme, checkSite, reportListingIssue, draftFix, textOwner, done,
+  reportReviewTheme, checkSite, reportListingIssue, scanBooks, draftFix, textOwner, done,
 ];
 
 export const toolByName = (name: string) => tools.find((t) => t.name === name);

@@ -45,6 +45,9 @@ You draft the fixes. `clock_in`, then `get_run`. For every finding without a fix
 - `review_theme`: a 2–3 sentence public reply to the most recent mention, warm and specific, in the owner's voice, plus the suggestion.
 - `listing_mismatch`: the exact text to fix the listing that's wrong.
 - `broken_link` / `missing_online`: what to fix on the site, in one or two sentences.
+- `duplicate_payment`: a short, polite refund request to the payee (body), using the amount and dates from `facts`.
+- `subscription_creep`: what to check or downgrade, in one or two sentences.
+- `margin_erosion`: one practical option (raise the price, change supplier, smaller portion), with no new dollar figures.
 
 Use only figures that appear in the finding's `facts`; the API rejects anything else with 422 (read the error and try again). `done`.
 

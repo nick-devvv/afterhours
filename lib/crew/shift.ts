@@ -17,6 +17,8 @@ export interface Job {
 }
 
 const SCAN_AGENTS: AgentId[] = ['vic', 'june', 'otto'];
+/** Lou joins the scan when the owner sent expenses or a catalog (Dot sorted them before the shift). */
+const scanAgents = (run: Run): AgentId[] => (run.books?.some((f) => f.kind === 'expenses' || f.kind === 'catalog') ? [...SCAN_AGENTS, 'lou'] : SCAN_AGENTS);
 export const GROKBOT_CLOCKIN_MS = 90_000;
 export const GROKBOT_DONE_MS = 6 * 60_000;
 
@@ -52,9 +54,9 @@ function advance(run: Run, shift: ShiftState, emit: Emit): Job[] {
         return [];
       }
       shift.phase = 'scan';
-      return plan(run, shift, emit, SCAN_AGENTS.map((a) => jobKey(a, 'main')));
+      return plan(run, shift, emit, scanAgents(run).map((a) => jobKey(a, 'main')));
     }
-    if (shift.phase === 'scan' && SCAN_AGENTS.every((a) => fin(jobKey(a, 'main')))) {
+    if (shift.phase === 'scan' && scanAgents(run).filter((a) => shift.started.includes(jobKey(a, 'main'))).every((a) => fin(jobKey(a, 'main')))) {
       shift.phase = 'fix';
       if (run.findings.length) return plan(run, shift, emit, ['fern:main']);
       shift.finished.push('fern:main');
