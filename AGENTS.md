@@ -5,10 +5,10 @@ Give this file to your Grok Bot before it writes code here.
 - **Read `docs/MVP_SPEC.md` first.** The contract is its Data shapes, API contract, Tools and Events sections, mirrored in `lib/types.ts`.
 - **Ownership.**
   - Nick: `app/` (except `app/api/`), `public/`, design, README.
-  - Darian: `app/api/` (except `app/api/text/`), `lib/` (except `lib/text/` and `lib/books/`), `grokbot/`, `scripts/`, `tests/` for his code.
-  - Rayyan: `deck/`, `app/api/text/`, `lib/text/`, `lib/books/`, their tests.
+  - Darian: the whole backend: `app/api/`, `lib/`, `grokbot/`, `scripts/`, `tests/`.
+  - Rayyan: `deck/` and `docs/BUILD_LOG.md`. No app code.
   - Don't edit someone else's folders. Need a change? Ask, or open a PR that only touches your side.
-- **Branches.** `nick/frontend`, `darian/backend`, `rayyan/backend`. Merge into `main` through small PRs, at least once an hour. `main` is what Vercel deploys and must always build.
+- **Branches.** `nick/frontend`, `darian/backend`, `rayyan/deck`. Merge into `main` through small PRs, at least once an hour. `main` is what Vercel deploys and must always build.
 - **Changing the contract** means changing `lib/types.ts` and `docs/MVP_SPEC.md` in the same PR and posting it in the team chat. Darian owns the contract; Nick and Rayyan propose.
 - **No fake data on stage.** Every business, price, review and competitor shown comes from a real source with a link. No mock crew, no invented numbers, no sample shop in the live app. Test fixtures live in `tests/` only.
 - **Code computes money, Bots decide and write.** Every dollar amount comes from `lib/engine/`. A Bot reports facts (prices, quotes, links); it never types a dollar total. The API rejects (422) a draft whose figures don't match.
