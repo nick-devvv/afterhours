@@ -10,7 +10,8 @@ const list = (v?: string) =>
 export const CREW_AGENTS: AgentId[] = ['rosa', 'vic', 'june', 'otto', 'fern'];
 
 export function config() {
-  const e = process.env;
+  // Trim every value: a key pasted with a trailing space or newline must still work.
+  const e: Record<string, string | undefined> = Object.fromEntries(Object.entries(process.env).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v]));
   const webhooks: Partial<Record<AgentId, { url: string; key: string }>> = {};
   for (const a of CREW_AGENTS) {
     const url = e[`GROKBOT_WEBHOOK_${a.toUpperCase()}`];
