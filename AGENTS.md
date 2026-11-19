@@ -14,7 +14,7 @@ Give this file to your Grok Bot before it writes code here.
 - **Code computes money, Bots decide and write.** Every dollar amount comes from `lib/engine/`. A Bot reports facts (prices, quotes, links); it never types a dollar total. The API rejects (422) a draft whose figures don't match.
 - **Money is integer cents.** The UI formats what the API returns and never hard-codes a number.
 - **Estimates say so.** Anything not from the owner's own books is labeled an estimate and lists its assumptions.
-- **Nothing reaches a real third party.** Texts only go to numbers in `TEXT_ALLOWLIST`, emails only to `MAIL_ALLOWLIST`. We play the owner on stage; we never contact the business we scanned.
+- **Nothing reaches a real third party.** Texts only go to numbers in `TEXT_ALLOWLIST` (or, with `TEXT_ALLOW_SELF_LINKED=true`, to a Telegram chat whose owner pressed Start on our link themselves), emails only to `MAIL_ALLOWLIST`. We play the owner on stage; we never contact the business we scanned.
 - **No secrets in git.** Keys go in `.env.local` and Vercel env only.
 - **Tests run with no keys and no network:** `npm test`.
 - **Log Bot work** in `docs/BUILD_LOG.md` (one line each: who, which Bot, what it did). It's our proof for "Built with Grok Bot".

@@ -11,8 +11,12 @@ import * as T from './templates';
 export const MAX_TEXTS_PER_RUN = 6;
 
 export function allowlisted(owner: Owner) {
-  const list = config().textAllowlist;
-  return (owner.phone && list.includes(owner.phone)) || (owner.telegramChatId && list.includes(owner.telegramChatId)) || false;
+  const c = config();
+  const list = c.textAllowlist;
+  if (owner.phone && list.includes(owner.phone)) return true;
+  if (owner.telegramChatId && list.includes(owner.telegramChatId)) return true;
+  // Self-linked Telegram owners: verified only by tapping t.me/<bot>?start=<ownerId> and pressing Start.
+  return c.textAllowSelfLinked && owner.channel === 'telegram' && owner.verified && !!owner.telegramChatId;
 }
 
 export function inQuietHours(owner: Owner, now = new Date()) {
