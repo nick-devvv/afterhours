@@ -5,6 +5,7 @@ import { findOwner, getOwner, saveOwner } from '@/lib/store';
 import { handleInbound } from '@/lib/text/inbound';
 import { sendText, allowlisted } from '@/lib/text/send';
 import { welcome } from '@/lib/text/templates';
+import { replyToChat } from '@/lib/text/telegramSetup';
 
 export const maxDuration = 60;
 
@@ -22,7 +23,10 @@ export async function POST(req: Request) {
       const start = text.match(/^\/start\s+(\S+)/);
       if (start) {
         const owner = await getOwner(start[1]);
-        if (!owner) return;
+        if (!owner) {
+          await replyToChat(chatId, `Hi, it's Rosa from Afterhours. That link has expired. Open ${c.publicUrl}, add your name under "Get Rosa's texts", and tap Connect on Telegram again.`);
+          return;
+        }
         owner.telegramChatId = chatId;
         owner.channel = 'telegram';
         owner.verified = true;
@@ -34,6 +38,7 @@ export async function POST(req: Request) {
       const owner = await findOwner({ telegramChatId: chatId });
       if (!owner) {
         console.warn(`[telegram] message from unknown chat ${chatId}`);
+        await replyToChat(chatId, `Hi, it's Rosa from Afterhours. I run the night crew for your business. To connect me, open ${c.publicUrl}, add your name under "Get Rosa's texts" and tap Connect on Telegram.`);
         return;
       }
       await handleInbound(owner, text);

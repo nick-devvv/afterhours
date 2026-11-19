@@ -1,3 +1,4 @@
+import { ensureTelegramWebhook } from '@/lib/text/telegramSetup';
 import { z } from 'zod';
 import { config } from '@/lib/config';
 import { body, ok, route } from '@/lib/http';
@@ -6,6 +7,7 @@ import { saveOwner } from '@/lib/store';
 import type { Owner } from '@/lib/types';
 
 export const POST = route(async (req: Request) => {
+  await ensureTelegramWebhook();
   const input = z
     .object({
       name: z.string().min(1).max(80),

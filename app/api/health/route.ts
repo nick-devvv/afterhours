@@ -1,10 +1,12 @@
 import { config } from '@/lib/config';
 import { ok } from '@/lib/http';
+import { ensureTelegramWebhook } from '@/lib/text/telegramSetup';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const c = config();
+  const telegram = await ensureTelegramWebhook();
   return ok({
     ok: true,
     crew: c.crew,
@@ -15,5 +17,6 @@ export async function GET() {
     mail: c.resendKey ? 'resend' : 'off',
     mcpUrl: c.mcpUrl,
     agentToken: !!c.agentToken,
+    telegramWebhook: telegram.ok ? 'set' : telegram.detail,
   });
 }
