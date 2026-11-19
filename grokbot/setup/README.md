@@ -10,4 +10,4 @@ Order: **Vic first** (get one Bot working end to end), then Rosa, Otto, June, Fe
 4. `PUBLIC_URL=… AFTERHOURS_AGENT_TOKEN=… npm run smoke-grokbot`: every Bot should answer "pong".
 5. Start a run with `crew: "grokbot"`. Any Bot that doesn't clock in within 90 s (or finish in 6 min) is replaced by the API crew, and the shop says so.
 
-Dot (the file clerk) and Lou don't need Grok Bots: Dot runs inside `POST /api/books`.
+Lou runs as a Grok Bot only when the owner uploaded expenses or a catalog. Dot doesn't need a Bot: it runs inside `POST /api/books`.
