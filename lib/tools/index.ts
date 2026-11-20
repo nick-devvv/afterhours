@@ -38,11 +38,13 @@ export const clockIn = defineTool({
     const { run } = await mutate(runId, ({ run, shift, emit }) => {
       const a = agentOf(run, agent);
       const from = a.room;
+      const job = shift.jobs[currentJob(agent, shift)];
+      if (job && !job.clockedInAt) job.clockedInAt = nowIso();
+      // The API crew clocks agents in before the model does; don't play the walk-in twice.
+      if (a.status === 'clocked_in' || a.status === 'working') return;
       a.status = 'clocked_in';
       a.room = a.home;
       a.message = 'On shift';
-      const job = shift.jobs[currentJob(agent, shift)];
-      if (job && !job.clockedInAt) job.clockedInAt = nowIso();
       emit('agent.clocked_in', {}, { agent, room: a.home });
       emit('agent.moved', { from, to: a.home }, { agent, room: a.home });
     });
