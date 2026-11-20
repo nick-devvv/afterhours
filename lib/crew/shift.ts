@@ -101,7 +101,9 @@ let apiDispatcher: Dispatcher = async (job) => {
   } catch (e) {
     console.warn('[shift] self-dispatch failed, running in-process', e);
     const { runAgent } = await import('./api');
-    void runAgent(job.runId, job.agent, job.phase);
+    // keep the function alive until the agent finishes (a bare promise is cut off when the response ends)
+    const { waitUntil } = await import('@vercel/functions');
+    waitUntil(runAgent(job.runId, job.agent, job.phase).catch((err) => console.error('[shift] in-process agent failed', err)));
   }
 };
 
