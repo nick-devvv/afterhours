@@ -24,7 +24,7 @@ export function PhoneMirror() {
             after = Math.max(after, e.seq);
             if (e.type === 'text.sent' || e.type === 'text.received') add.push((e.data as { message: TextMessage }).message);
           }
-          if (add.length) { setMsgs((m) => [...m, ...add]); setOpen(true); }
+          if (add.length) setMsgs((m) => [...m, ...add]);
         }
       } catch {}
       if (!stop) t = setTimeout(tick, 2000);

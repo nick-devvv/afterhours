@@ -14,6 +14,7 @@ export interface ShiftState {
   /** per job: when it was triggered, when the agent clocked in, which crew it runs on */
   jobs: Record<string, { at: string; clockedInAt?: string; via: 'api' | 'grokbot'; tookOver?: boolean }>;
   earlyAlertSent: boolean;
+  callAnswered?: boolean;
   approvalSent: boolean;
   textsSent: number;
   ping?: boolean;

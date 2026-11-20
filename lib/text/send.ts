@@ -108,6 +108,7 @@ export async function sendRunText(runId: string, body: string, kind: NonNullable
   if (!run.ownerId) return { sent: false, reason: 'No owner is linked to this run, so there is nobody to text. That is fine; call done.' };
   const owner = await getOwner(run.ownerId);
   if (!owner) return { sent: false, reason: 'Owner not found' };
+  if (!rec.shift.callAnswered) return { sent: false, reason: 'The owner has not answered the call on screen yet. Texts go out after they answer. Call done.' };
   const t = run.totals;
   const totals = Object.fromEntries(Object.entries(t).filter(([k]) => k.endsWith('Cents')).map(([k, v]) => [k, formatCents(v as number)]));
   const bad = badFigures([body], allowedCents(totals, ...run.findings.map((f) => f.facts)));
@@ -121,7 +122,7 @@ export async function sendRunText(runId: string, body: string, kind: NonNullable
 /** After Rosa's report: if she didn't manage to text the numbered list, send the template. */
 export async function ensureApprovalText(runId: string) {
   const rec = await getRecord(runId);
-  if (!rec || rec.shift.approvalSent || !rec.run.ownerId || rec.shift.phase !== 'closed') return;
+  if (!rec || rec.shift.approvalSent || !rec.shift.callAnswered || !rec.run.ownerId || rec.shift.phase !== 'closed') return;
   if (!rec.run.fixes.some((f) => f.status === 'drafted')) return;
   const owner = await getOwner(rec.run.ownerId);
   if (!owner) return;
@@ -132,7 +133,7 @@ export async function ensureApprovalText(runId: string) {
 /** First high-severity finding → one early heads-up, once per run. */
 export async function maybeEarlyAlert(runId: string) {
   const rec = await getRecord(runId);
-  if (!rec || rec.shift.earlyAlertSent || !rec.run.ownerId || rec.shift.phase !== 'scan') return;
+  if (!rec || rec.shift.earlyAlertSent || !rec.shift.callAnswered || !rec.run.ownerId) return;
   const f = rec.run.findings.find((x) => x.severity === 'high');
   if (!f) return;
   const { result } = await mutate(runId, ({ shift }) => {
@@ -143,4 +144,21 @@ export async function maybeEarlyAlert(runId: string) {
   if (!result) return;
   const owner = await getOwner(rec.run.ownerId);
   if (owner) await sendText(owner, T.earlyAlert(rec.run, f), { runId, kind: 'alert' });
+}
+
+/** The owner answered Rosa's on-screen call: texts are allowed from now on. Sends the heads-up for the
+ *  biggest finding so far, and the approval list if the shift already closed. */
+export async function callAnswered(runId: string) {
+  const rec = await getRecord(runId);
+  if (!rec) throw new ApiErr('not_found', `No run ${runId}`);
+  if (!rec.shift.callAnswered) await mutate(runId, ({ shift }) => void (shift.callAnswered = true));
+  const fresh = await getRecord(runId);
+  if (fresh && !fresh.shift.earlyAlertSent && fresh.run.ownerId && fresh.run.findings.length) {
+    const f = fresh.run.findings.find((x) => x.severity === 'high') ?? fresh.run.findings[0];
+    const { result } = await mutate(runId, ({ shift }) => { if (shift.earlyAlertSent) return false; shift.earlyAlertSent = true; return true; });
+    const owner = result ? await getOwner(fresh.run.ownerId) : null;
+    if (owner) await sendText(owner, T.earlyAlert(fresh.run, f), { runId, kind: 'alert' });
+  }
+  await ensureApprovalText(runId);
+  return { ok: true };
 }

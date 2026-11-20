@@ -1160,7 +1160,7 @@ class Component extends DCLogic {
         ringing, live: !ringing, typing: !ringing && this.state.typing,
         lines: ringing ? [] : this.state.lines.map((l) => ({ text: l.text, align: l.who === 'you' ? 'flex-end' : 'flex-start', bg: l.who === 'you' ? '#7B2FF7' : '#1C1730' })),
         replies: ringing || this.state.typing ? [] : this.replies(live),
-        accept: () => { this.call('enableSound'); this.call('answerCall'); },
+        accept: () => { this.call('enableSound'); this.call('answerCall'); try { const m = /[?&]run=([^&]+)/.exec(window.location.search); if (m) fetch('/api/runs/' + m[1] + '/answered', { method: 'POST' }).catch(() => {}); } catch (e) {} },
         decline: () => this.call('endCall'),
         hangup: () => this.call('endCall'),
       };
