@@ -26,6 +26,9 @@ export class ApiCrew implements Crew {
   private lastThought = new Map<string, number>();
   private shopName = 'Your business';
   private clocked = new Set<string>();
+  private fixIds = new Set<string>();
+  private decided = new Set<string>();
+  private heldFinish: PlumbEvent | null = null;
 
   constructor(private hooks: CrewHooks, private base = '', _sample?: string) {
     if (typeof window !== 'undefined') this.runId = new URLSearchParams(window.location.search).get('run') ?? '';
@@ -153,8 +156,28 @@ export class ApiCrew implements Crew {
         this.findings.set(f.id, f);
         return [ev('finding.created', { finding: this.toFinding(f) }, toAgent(f.agent))];
       }
-      case 'fix.drafted':
-        return [ev('fix.drafted', { fix: this.toFix(d.fix as AH.Fix) }, 'felix')];
+      case 'fix.drafted': {
+        const fx = d.fix as AH.Fix;
+        this.fixIds.add(fx.id);
+        return [ev('fix.drafted', { fix: this.toFix(fx) }, 'felix')];
+      }
+      case 'fix.approved': case 'fix.rejected': {
+        this.decided.add(String(d.fixId));
+        const out = [ev(e.type, d)];
+        // The shift ends on screen only once the owner has decided every fix.
+        if (this.heldFinish && [...this.fixIds].every((id) => this.decided.has(id))) { out.push({ ...this.heldFinish, seq: e.seq }); this.heldFinish = null; }
+        return out;
+      }
+      case 'run.finished': {
+        const status = String(d.status ?? '');
+        const open = [...this.fixIds].filter((id) => !this.decided.has(id));
+        if (status === 'awaiting_approval' || open.length) {
+          // Not the end: the fixes are on the owner's desk. Keep the desk open and hold the finale.
+          this.heldFinish = ev('run.finished', d);
+          return [ev('approval.requested', { fixIds: open })];
+        }
+        return [ev('run.finished', d)];
+      }
       case 'fix.applied':
         return [ev('fix.applied', { fixId: d.fixId, sku: d.itemId, fromCents: d.fromCents, toCents: d.toCents })];
       case 'finding.updated': case 'text.sent': case 'text.received':

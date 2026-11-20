@@ -18,9 +18,11 @@ const Candidate = z.object({
 export const POST = route(async (req: Request) => {
   const input = z.object({ candidate: Candidate, ownerId: z.string().optional(), crew: z.enum(['api', 'grokbot']).optional() }).parse(await body(req));
   // No owner from the page: Rosa texts the team's own Telegram chat (OWNER_TELEGRAM_CHAT_ID), if set.
-  const ownerId = input.ownerId ?? (await defaultOwnerId());
+  // A page can send an old owner that never finished linking Telegram: then text the team's chat instead.
+  const given = input.ownerId ? await getOwner(input.ownerId) : null;
+  const linked = given && given.verified && (given.telegramChatId || given.phone) ? given : null;
+  const ownerId = linked?.id ?? (await defaultOwnerId());
   const owner = ownerId ? await getOwner(ownerId) : null;
-  if (input.ownerId && !owner) throw new ApiErr('not_found', `No owner ${input.ownerId}`);
   const run = await createRun({ candidate: input.candidate, crew: input.crew ?? config().crew, ownerId: owner?.id });
   if (owner) {
     owner.runIds.push(run.id);
