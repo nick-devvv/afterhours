@@ -80,7 +80,7 @@ button{font-family:inherit}
     <!-- top bar -->
     <header style="position: absolute; left: 20px; right: 20px; top: 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px">
       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; pointer-events: auto">
-        <a href="Main.dc.html" style="font-weight: 800; font-size: 26px; letter-spacing: -0.055em; color: var(--ink); text-decoration: none">plumb</a>
+        <a href="Main.dc.html" style="font-weight: 800; font-size: 26px; letter-spacing: -0.055em; color: var(--ink); text-decoration: none">after<span style="color: #FF3BD4">hours</span></a>
         <div style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 13px">
           <span style="font-weight: 600">Your business</span>
           <span style="color: var(--muted)">San Francisco</span>
@@ -191,7 +191,7 @@ button{font-family:inherit}
             </svg>
             <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1">
               <span style="display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 13px">
-                <span style="display: flex; align-items: center; gap: 5px; min-width: 0"><span style="font-weight: 700">{{w.name}}</span><span style="padding: 0 5px; border-radius: 999px; background: {{w.color}}; color: #F2F6FF; font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.08em; line-height: 15px">AI AGENT</span></span>
+                <span style="display: flex; align-items: center; gap: 5px; min-width: 0"><span style="font-weight: 700">{{w.name}}</span><span style="padding: 0 5px; border-radius: 999px; background: {{w.color}}; color: #F2F6FF; font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.08em; line-height: 15px">GROK BOT</span></span>
                 <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--red)">{{w.found}}</span>
               </span>
               <span style="font-size: 11px; color: var(--muted)">{{w.role}}</span>
@@ -347,7 +347,7 @@ button{font-family:inherit}
                 </sc-for>
               </svg>
               <div style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0">
-                <span style="align-self: flex-start; padding: 1px 7px; border-radius: 999px; background: {{badge.color}}; color: #F2F6FF; font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em">AI AGENT</span>
+                <span style="align-self: flex-start; padding: 1px 7px; border-radius: 999px; background: {{badge.color}}; color: #F2F6FF; font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em">GROK BOT</span>
                 <div style="font-weight: 800; font-size: 22px; letter-spacing: -0.03em; line-height: 1.05">{{badge.name}}</div>
                 <div style="font-size: 12.5px; color: var(--muted)">{{badge.role}}</div>
               </div>
@@ -410,7 +410,7 @@ button{font-family:inherit}
                 </sc-for>
               </svg>
               <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
-                <span style="display: flex; align-items: center; gap: 6px"><span style="font-weight: 800; font-size: 17px">{{cs.name}}</span><span style="padding: 0 6px; border-radius: 999px; background: {{cs.color}}; color: #F2F6FF; font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.1em; line-height: 16px">AI AGENT</span></span>
+                <span style="display: flex; align-items: center; gap: 6px"><span style="font-weight: 800; font-size: 17px">{{cs.name}}</span><span style="padding: 0 6px; border-radius: 999px; background: {{cs.color}}; color: #F2F6FF; font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.1em; line-height: 16px">GROK BOT</span></span>
                 <span style="font-size: 12.5px; color: var(--muted)">{{cs.role}}</span>
               </div>
             </div>
@@ -1087,7 +1087,7 @@ class Component extends DCLogic {
     const tags = raw.map((r) => {
       const crowded = raw.some((o) => o !== r && Math.abs(o.x - r.x) < 110 && Math.abs(o.y - r.y) < 56);
       return {
-        x: r.x, y: r.y, name: r.a.name, color: COLORS[r.a.id], badge: r.a.onCall ? 'ON CALL' : 'AI AGENT',
+        x: r.x, y: r.y, name: r.a.name, color: COLORS[r.a.id], badge: r.a.onCall ? 'ON CALL' : 'GROK BOT',
         hasAction: !compact && !crowded && !!r.act, action: r.act,
         hasBar: r.working && !crowded, pct: pct(r.a), bar: barColor(r.a),
       };
@@ -1224,7 +1224,7 @@ class Component extends DCLogic {
     return {
       accent, th, setCanvas: this.setCanvas, missing: this.state.missing, wide: !compact,
       crewPill: s ? { text: (s.shop.fictional ? 'Sample shop · ' : '') + s.crew.label, fg: s.crew.live ? th.accentInk : th.muted, border: s.crew.live ? th.accentInk : th.muted } : { text: 'Sample shop · REPLAY', fg: th.muted, border: th.muted },
-      railCrew: s && s.crew.live ? 'on Grok Bot' : 'REPLAY',
+      railCrew: s && s.crew.live ? (s.crew.label.startsWith('GROK BOT') ? 'Grok Bot crew' : 'Grok API crew') : 'REPLAY',
       hasError: !!(s && s.error), errorText: s && s.error ? s.error : '',
       hasNotice: !!(s && s.notice && !s.error), noticeText: s && s.notice ? s.notice : '',
       counterValue, counterLabel, counterColor, counterSize: compact ? 42 : 64, showSub, subLine, subColor: done ? th.red : th.accentInk,

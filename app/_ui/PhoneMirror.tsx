@@ -7,7 +7,7 @@ import type { AfterhoursEvent, TextMessage } from '@/lib/types';
 export function PhoneMirror() {
   const [runId, setRunId] = useState('');
   const [msgs, setMsgs] = useState<TextMessage[]>([]);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => { setRunId(new URLSearchParams(window.location.search).get('run') ?? ''); }, []);
 
@@ -24,7 +24,7 @@ export function PhoneMirror() {
             after = Math.max(after, e.seq);
             if (e.type === 'text.sent' || e.type === 'text.received') add.push((e.data as { message: TextMessage }).message);
           }
-          if (add.length) setMsgs((m) => [...m, ...add]);
+          if (add.length) { setMsgs((m) => [...m, ...add]); setOpen(true); }
         }
       } catch {}
       if (!stop) t = setTimeout(tick, 2000);
@@ -35,7 +35,7 @@ export function PhoneMirror() {
 
   if (!runId) return null;
   return (
-    <aside aria-label="Texts with Rosa" style={{ position: 'fixed', right: 16, top: 84, zIndex: 50, width: open ? 300 : 'auto', maxHeight: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column', borderRadius: 22, background: 'rgba(10,7,20,.92)', border: '1px solid #2A2148', boxShadow: '0 0 0 1px rgba(57,232,255,.12), 0 20px 60px rgba(0,0,0,.5)', color: '#E9F6FF', fontFamily: 'Geist, system-ui, sans-serif', overflow: 'hidden' }}>
+    <aside aria-label="Texts with Rosa" style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 50, width: open ? 300 : 'auto', maxHeight: '38vh', display: 'flex', flexDirection: 'column', borderRadius: 22, background: 'rgba(10,7,20,.92)', border: '1px solid #2A2148', boxShadow: '0 0 0 1px rgba(57,232,255,.12), 0 20px 60px rgba(0,0,0,.5)', color: '#E9F6FF', fontFamily: 'Geist, system-ui, sans-serif', overflow: 'hidden' }}>
       <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', background: 'transparent', border: 0, color: 'inherit', font: 'inherit', cursor: 'pointer', textAlign: 'left' }}>
         <span aria-hidden="true" style={{ width: 10, height: 10, borderRadius: 999, background: msgs.length ? '#39FF9F' : '#3B2F66' }} />
         <span style={{ fontWeight: 600 }}>Rosa · texts</span>

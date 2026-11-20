@@ -60,10 +60,14 @@ function advance(run: Run, shift: ShiftState, emit: Emit): Job[] {
         emit('business.resolved', { business: run.business }, { agent: 'rosa' });
         emit('agent.status', { message: "Couldn't find this shop online, so tonight the crew works from your books.", progress: 100 }, { agent: 'rosa' });
         shift.phase = 'scan';
-        return plan(run, shift, emit, [jobKey('lou', 'main')]);
+        const books = plan(run, shift, emit, [jobKey('lou', 'main')]);
+        if (books.length) return books;
+        continue; // Lou may already be done: fall through to the scan check so Fern starts
       }
       shift.phase = 'scan';
-      return plan(run, shift, emit, scanAgents(run).map((a) => jobKey(a, 'main')));
+      const scan = plan(run, shift, emit, scanAgents(run).map((a) => jobKey(a, 'main')));
+      if (scan.length) return scan;
+      continue;
     }
     if (shift.phase === 'scan' && scanAgents(run).filter((a) => shift.started.includes(jobKey(a, 'main'))).every((a) => fin(jobKey(a, 'main')))) {
       shift.phase = 'fix';

@@ -1017,7 +1017,7 @@ export class Shop {
     return {
       phase: this.phase, speed: this.speed, paused: this.paused, spot: this.spot && this.spot.until > this.clock ? this.spot.room : null, pixel: this.pixel, theme: this.dark ? 'dark' : 'light', follow: this.follow, selected: this.selected,
       sound: { enabled: this.sound.enabled, muted: this.sound.muted, music: this.sound.musicOn },
-      crew: { kind: this.crewLabel.startsWith('Looking') || this.crewLabel.startsWith('Connecting') ? 'connecting' : this.crew.kind, label: this.crewLabel, live: this.crewLabel.startsWith('Grok Bot') },
+      crew: { kind: this.crewLabel.startsWith('Looking') || this.crewLabel.startsWith('Connecting') ? 'connecting' : this.crew.kind, label: this.crewLabel, live: /live/i.test(this.crewLabel) },
       error: this.error,
       notice: this.notice,
       shop: info

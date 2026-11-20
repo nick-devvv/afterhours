@@ -111,8 +111,12 @@ export class ApiCrew implements Crew {
       case 'run.started': {
         // The whole crew walks in for the shift right away; each one gets to work when their job starts.
         const all: AgentId[] = ['penny', 'scout', 'dock', 'sid', 'audrey', 'felix'];
-        const walkIns = all.filter((a) => !this.clocked.has(a)).map((a) => { this.clocked.add(a); return ev('agent.clocked_in', {}, a); });
-        return [ev('run.started', { crew: d.crew }), ...walkIns];
+        const HOME: Record<string, string> = { penny: 'front_desk', scout: 'shop_floor', dock: 'loading_dock', sid: 'server_closet', audrey: 'back_office', felix: 'mailroom' };
+        const fresh = all.filter((a) => !this.clocked.has(a));
+        fresh.forEach((a) => this.clocked.add(a));
+        const walkIns = fresh.map((a) => ev('agent.clocked_in', {}, a));
+        const toRooms = fresh.filter((a) => a !== 'penny').map((a) => ev('agent.moved', { from: 'front_desk', to: HOME[a] }, a));
+        return [ev('run.started', { crew: d.crew }), ...walkIns, ...toRooms];
       }
       case 'agent.clocked_in': {
         const a = base.agent ?? '';
@@ -124,6 +128,7 @@ export class ApiCrew implements Crew {
         const b = d.business as AH.Business;
         this.shopName = b.name;
         this.shop = this.toShop(b);
+        if (!b.items?.length) return [];   // nothing to put on the shelves (no menu online): skip the "unloaded 0 products" beat
         return [ev('intake.done', { counts: this.shop.counts, products: this.shop.products, suppliers: [], subscriptions: [] }, 'penny')];
       }
       case 'source.found': {
