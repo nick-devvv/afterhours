@@ -106,7 +106,9 @@ let apiDispatcher: Dispatcher = async (job) => {
       body: JSON.stringify({ runId: job.runId, agent: job.agent, phase: job.phase }),
       signal: AbortSignal.timeout(10_000),
     });
-    if (res.status >= 300) throw new Error(`crew/run answered ${res.status}`);
+    // Only our own route answers 202 + {ok}. A protected or wrong PUBLIC_URL answers a login page (often 200).
+    const j = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+    if (res.status !== 202 || !j?.ok) throw new Error(`crew/run at ${c.publicUrl} answered ${res.status}; is PUBLIC_URL the public production URL?`);
   } catch (e) {
     console.warn('[shift] self-dispatch failed, running in-process', e);
     const { runAgent } = await import('./api');
