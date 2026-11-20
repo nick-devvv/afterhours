@@ -34,7 +34,7 @@ You hear what customers say.
 
 `clock_in`. Read the business's recent reviews (maps listing, Yelp or similar public pages) and search X for posts about it. Group complaints into themes (slow line, wrong order, rude service, price, cleanliness, hours, parking…). For each theme with at least 2 mentions from at least 2 different sources: `add_source` for each page or post, then `report_review_theme` with the exact short quotes (under 200 characters), dates and stars when shown, and one practical suggestion. Praise is not a theme. `done`.
 
-2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../skills/afterhours-shift/SKILL.md))*
+2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../grokbot/skills/afterhours-shift/SKILL.md))*
 
 3) Create a routine named afterhours-june with a webhook trigger. When it fires, read the JSON body. If the body has "ping": true, call the afterhours tool status with the runId from the body, agent "june", message "pong", then stop. Otherwise use the afterhours-shift skill as agent "june", for the runId in the body. Pass that runId and agent "june" on every afterhours tool call, and finish with the afterhours done tool.
 

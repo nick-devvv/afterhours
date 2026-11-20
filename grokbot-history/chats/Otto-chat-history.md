@@ -39,7 +39,7 @@ You check the business's online storefront.
 
 `clock_in`. Call `check_site` (our code fetches the site and tests every order, menu and booking link; it creates those findings itself). Then compare the hours, phone and address the website shows with what the maps listing and one directory show. If a field really disagrees, `add_source` for each and call `report_listing_issue` with the values side by side. `done`.
 
-2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../skills/afterhours-shift/SKILL.md))*
+2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../grokbot/skills/afterhours-shift/SKILL.md))*
 
 3) Create a routine named afterhours-otto with a webhook trigger. When it fires, read the JSON body. If the body has "ping": true, call the afterhours tool status with the runId from the body, agent "otto", message "pong", then stop. Otherwise use the afterhours-shift skill as agent "otto", for the runId in the body. Pass that runId and agent "otto" on every afterhours tool call, and finish with the afterhours done tool.
 

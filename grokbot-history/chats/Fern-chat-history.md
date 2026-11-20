@@ -43,7 +43,7 @@ You draft the fixes. `clock_in`, then `get_run`. For every finding without a fix
 
 Use only figures that appear in the finding's `facts`; the API rejects anything else with 422 (read the error and try again). `done`.
 
-2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../skills/afterhours-shift/SKILL.md))*
+2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../grokbot/skills/afterhours-shift/SKILL.md))*
 
 3) Create a routine named afterhours-fern with a webhook trigger. When it fires, read the JSON body. If the body has "ping": true, call the afterhours tool status with the runId from the body, agent "fern", message "pong", then stop. Otherwise use the afterhours-shift skill as agent "fern", for the runId in the body. Pass that runId and agent "fern" on every afterhours tool call, and finish with the afterhours done tool.
 
