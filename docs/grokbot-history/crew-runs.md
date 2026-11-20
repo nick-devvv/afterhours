@@ -15,7 +15,7 @@ The Grok Bot app has no export, so the chats themselves stay in the app. This is
 | 3:59 PM | Created **Lou** (bookkeeper) with routine `afterhours-lou` |
 | 4:04 PM | Switched the shared MCP connector to the public production URL. Vic lists all **16 tools** |
 
-The paste-ready setup for each Bot is in [`grokbot/setup/`](../grokbot/setup/README.md), and the job descriptions are in [`grokbot/BOTS.md`](../grokbot/BOTS.md).
+The paste-ready setup for each Bot is in [`grokbot/setup/`](../../grokbot/setup/README.md), and the job descriptions are in [`grokbot/BOTS.md`](../../grokbot/BOTS.md).
 
 ## Ping: every Bot answers through its webhook (4:05 PM)
 
