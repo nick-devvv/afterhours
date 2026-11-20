@@ -97,6 +97,6 @@ Grok Bot · Grok 4.7 (xAI Responses API, web search, X search) · MCP · Next.js
 
 ## Team
 
-Nick, Darian and Rayyan, each working with their own Grok Bot ([build log](docs/BUILD_LOG.md) · [everything the Grok Bot crew did today](docs/GROK_BOT_HISTORY.md)). The 3D shop engine started in our earlier project, Plumb (Nov 18); everything else was built today.
+Nick, Darian and Rayyan, each working with their own Grok Bot ([build log](docs/BUILD_LOG.md) · [Grok Bot history](docs/grokbot-history/)). The 3D shop engine started in our earlier project, Plumb (Nov 18); everything else was built today.
 
 Working on the code? Read [`AGENTS.md`](AGENTS.md) first.
