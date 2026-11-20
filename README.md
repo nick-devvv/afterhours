@@ -27,7 +27,7 @@
 
 ## Try it in one click
 
-**[afterhours-picky9.vercel.app/?demo](https://afterhours-picky9.vercel.app/?demo)** loads the sample books for a made-up coffee shop, Quillbrook Coffee, so you don't need any files. Click **Send in the crew** and watch the bots work. You can also click **No files? Try the demo shop** on the home page. The sample CSVs are in [`public/samples/`](public/samples/) and hide five leaks for the crew to find: a double payment, two creeping bills and two shrinking margins.
+**[afterhours-picky9.vercel.app/?demo](https://afterhours-picky9.vercel.app/?demo)** loads the sample books for a made-up coffee shop, Driftwood & Daughters Coffee, so you don't need any files. Click **Send in the crew** and watch the bots work. You can also click **No files? Try the demo shop** on the home page. The sample CSVs are in [`public/samples/`](public/samples/) and hide five leaks for the crew to find: a double payment, two creeping bills and two shrinking margins.
 
 ![The Afterhours landing page: a neon city block at night, the three-step intake form and the crew of Grok Bots](docs/screenshots/landing.jpg)
 

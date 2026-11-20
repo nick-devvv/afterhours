@@ -79,12 +79,12 @@ export function Landing() {
     } catch (x) { setErr((x as Error).message); }
   }
 
-  // Demo: load the sample books for a made-up shop (Quillbrook Coffee) so anyone can try it without files.
-  const DEMO_FILES = ['quillbrook-coffee-bank-export-may-oct-2026.csv', 'quillbrook-coffee-square-sales-aug-oct-2026.csv', 'quillbrook-coffee-menu-prices-and-costs.csv'];
+  // Demo: load the sample books for a made-up shop (Driftwood & Daughters Coffee) so anyone can try it without files.
+  const DEMO_FILES = ['driftwood-coffee-bank-export-may-oct-2026.csv', 'driftwood-coffee-square-sales-aug-oct-2026.csv', 'driftwood-coffee-menu-prices-and-costs.csv'];
   async function loadDemo() {
     try {
       const got = await Promise.all(DEMO_FILES.map(async (n) => new File([await (await fetch(`/samples/${n}`)).blob()], n, { type: 'text/csv' })));
-      setFiles(got); setQuery('Quillbrook Coffee'); setErr(null);
+      setFiles(got); setQuery('Driftwood & Daughters Coffee'); setErr(null);
     } catch { setErr('Could not load the sample books. Try again.'); }
   }
   useEffect(() => { if (/[?&]demo\b/.test(window.location.search)) loadDemo(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
