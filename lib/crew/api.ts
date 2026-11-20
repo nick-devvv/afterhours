@@ -18,7 +18,11 @@ export function thinkingLine(name: string, input: unknown): string {
   const i = (input ?? {}) as Record<string, unknown>;
   const first = (k: string[]) => k.map((x) => i[x]).find((v) => typeof v === 'string') as string | undefined;
   let line: string;
-  if (name === 'web_search' || name === 'x_search') line = `${name === 'x_search' ? 'X search' : 'search'}: "${first(['query', 'q']) ?? ''}"`;
+  if (name === 'web_search' || name === 'x_search') {
+    const raw = typeof input === 'string' ? (() => { try { return JSON.parse(input as string); } catch { return { query: input }; } })() : i;
+    const q = (raw as Record<string, unknown>)?.query ?? (raw as Record<string, unknown>)?.q ?? ((raw as Record<string, unknown>)?.action as Record<string, unknown> | undefined)?.query ?? '';
+    line = `${name === 'x_search' ? 'X search' : 'search'}: "${String(q)}"`;
+  }
   else if (name === 'add_source') line = `open: ${String(i.url ?? '').replace(/^https?:\/\/(www\.)?/, '')}`;
   else if (name === 'add_competitor') line = `add_competitor: ${i.name}`;
   else if (name === 'draft_fix') line = `draft: ${i.title}`;
@@ -71,6 +75,8 @@ export async function runAgent(runId: string, agent: AgentId, phase: Phase) {
             if (call.toolName === 'x_search') run.usage.xPostsFetched += 1;
             if (OWN_TOOLS_WITH_EVENTS.has(call.toolName)) continue;
             const text = thinkingLine(call.toolName, call.input ?? call.args);
+            // Provider-executed searches don't always expose their query; skip empty bubbles.
+            if (/^(search|X search): ""$/.test(text)) continue;
             a.thinking = text;
             emit('agent.thinking', { text }, { agent, room: a.room });
           }
