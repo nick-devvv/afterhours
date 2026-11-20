@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  <b>A night crew of Grok Bots for small businesses.</b><br>
-  Name any real business. The crew checks its prices against the street, reads its reviews, tests every link on its site<br>
+  <b>A night crew of Grok Bots for small businesses.</b>
+  Name any real business. The crew checks its prices against the street, reads its reviews, tests every link on its site
   and goes through its books. Then it drafts the fixes and texts the owner. <b>Every claim comes with a link.</b>
 </p>
 
