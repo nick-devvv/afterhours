@@ -136,7 +136,7 @@ export function listingFinding(field: ListingField, pair: [ListingValue, Listing
     kind: 'listing_mismatch',
     agent: 'otto',
     room: 'server_closet',
-    title: `Your ${what} disagree: ${a.label} vs ${b.label}`,
+    title: `Your ${what} ${field === 'hours' ? 'disagree' : 'disagrees'}: ${a.label} vs ${b.label}`,
     detail: `${a.label} says "${a.text}", ${b.label} says "${b.text}". Customers who trust the wrong one ${field === 'hours' ? 'show up to a closed door or skip you when you\'re open' : 'can\'t reach you'}.`,
     severity: field === 'hours' ? 'high' : 'medium',
     impact: { basis: 'none', oneTimeCents: 0, monthlyCents: 0, firstYearCents: 0, assumptions: ['We don\'t put a dollar figure on listing mismatches.'] },
