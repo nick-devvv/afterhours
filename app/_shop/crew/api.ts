@@ -25,6 +25,7 @@ export class ApiCrew implements Crew {
   private findings = new Map<string, AH.Finding>();
   private lastThought = new Map<string, number>();
   private shopName = 'Your business';
+  private clocked = new Set<string>();
 
   constructor(private hooks: CrewHooks, private base = '', _sample?: string) {
     if (typeof window !== 'undefined') this.runId = new URLSearchParams(window.location.search).get('run') ?? '';
@@ -80,7 +81,8 @@ export class ApiCrew implements Crew {
       date: s.fetchedAt?.slice(0, 10),
     }));
     const detail = f.impact.basis === 'estimate' && f.impact.assumptions.length
-      ? `${f.detail} Estimate: ${f.impact.assumptions.join(' ')}` : f.detail;
+      ? `${f.detail} Estimate: ${f.impact.assumptions.join(' ')}`
+      : f.impact.basis === 'books' ? `${f.detail} From your books.` : f.detail;
     return {
       id: f.id, kind: f.kind, room: f.room, agent: toAgent(f.agent)!, title: f.title, detail,
       oneTimeCents: f.impact.oneTimeCents, monthlyCents: f.impact.monthlyCents, firstYearCents: f.impact.firstYearCents,
@@ -106,8 +108,18 @@ export class ApiCrew implements Crew {
     switch (e.type) {
       case 'run.created':
         return [ev('run.created', { shop: this.shop ?? this.toShop(null, String(d.query ?? '')) })];
-      case 'run.started':
-        return [ev('run.started', { crew: d.crew })];
+      case 'run.started': {
+        // The whole crew walks in for the shift right away; each one gets to work when their job starts.
+        const all: AgentId[] = ['penny', 'scout', 'dock', 'sid', 'audrey', 'felix'];
+        const walkIns = all.filter((a) => !this.clocked.has(a)).map((a) => { this.clocked.add(a); return ev('agent.clocked_in', {}, a); });
+        return [ev('run.started', { crew: d.crew }), ...walkIns];
+      }
+      case 'agent.clocked_in': {
+        const a = base.agent ?? '';
+        if (this.clocked.has(a)) return [ev('agent.status', { message: 'On the job', progress: 5 })];
+        this.clocked.add(a);
+        return [ev('agent.clocked_in', d)];
+      }
       case 'business.resolved': {
         const b = d.business as AH.Business;
         this.shopName = b.name;

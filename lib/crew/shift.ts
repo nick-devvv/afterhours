@@ -18,7 +18,8 @@ export interface Job {
 
 const SCAN_AGENTS: AgentId[] = ['vic', 'june', 'otto'];
 /** Lou joins the scan when the owner sent expenses or a catalog (Dot sorted them before the shift). */
-const scanAgents = (run: Run): AgentId[] => (run.books?.some((f) => f.kind === 'expenses' || f.kind === 'catalog') ? [...SCAN_AGENTS, 'lou'] : SCAN_AGENTS);
+const hasBooks = (run: Run) => !!run.books?.some((f) => f.kind === 'expenses' || f.kind === 'catalog' || f.kind === 'sales');
+const scanAgents = (run: Run): AgentId[] => (hasBooks(run) ? [...SCAN_AGENTS, 'lou'] : SCAN_AGENTS);
 export const GROKBOT_CLOCKIN_MS = 90_000;
 export const GROKBOT_DONE_MS = 6 * 60_000;
 
@@ -50,8 +51,16 @@ function advance(run: Run, shift: ShiftState, emit: Emit): Job[] {
     const fin = (k: string) => shift.finished.includes(k);
     if (shift.phase === 'resolve' && fin('rosa:resolve')) {
       if (!run.business) {
-        close(run, shift, emit, 'failed', "Rosa couldn't pin down the business, so the crew stood down.");
-        return [];
+        if (!hasBooks(run)) {
+          close(run, shift, emit, 'failed', "Rosa couldn't pin down the business, so the crew stood down.");
+          return [];
+        }
+        // Not findable online, but the owner sent their books: tonight's shift is the books.
+        run.business = { id: run.id, name: run.query || 'Your business', items: [], sourceIds: [] };
+        emit('business.resolved', { business: run.business }, { agent: 'rosa' });
+        emit('agent.status', { message: "Couldn't find this shop online, so tonight the crew works from your books.", progress: 100 }, { agent: 'rosa' });
+        shift.phase = 'scan';
+        return plan(run, shift, emit, [jobKey('lou', 'main')]);
       }
       shift.phase = 'scan';
       return plan(run, shift, emit, scanAgents(run).map((a) => jobKey(a, 'main')));
@@ -151,7 +160,8 @@ export async function startRun(runId: string) {
     run.status = 'running';
     shift.phase = 'resolve';
     emit('run.started', { crew: run.crew });
-    return plan(run, shift, emit, ['rosa:resolve']);
+    // Books don't need the business resolved: Lou starts with Rosa, so the crew is busy right away.
+    return plan(run, shift, emit, hasBooks(run) ? ['rosa:resolve', jobKey('lou', 'main')] : ['rosa:resolve']);
   });
   await launch(result);
   return { crew: run.crew, triggered: result[0]?.via ?? 'api' };

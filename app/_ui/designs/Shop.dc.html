@@ -689,6 +689,8 @@ class Component extends DCLogic {
       onState: (snap) => this.onSnap(snap),
       onOverlay: (ov) => this.setState({ ov }),
     });
+    // Opened from the home page with a run: start watching right away, no extra click.
+    if (/[?&]run=/.test(window.location.search)) setTimeout(() => { if (this.ctrl) this.ctrl.start(); }, 250);
   }
   onSnap(snap) {
     const c = snap.call;

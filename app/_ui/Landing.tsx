@@ -6,12 +6,7 @@ import { useRouter } from 'next/navigation';
 import { mount } from '@/app/_shop/engine';
 import type { BusinessCandidate, Owner, Run } from '@/lib/types';
 
-type Step = 'idle' | 'looking' | 'starting';
-const FILES = [
-  { key: 'expenses', label: 'Expenses', hint: 'Bank or card export (CSV)' },
-  { key: 'sales', label: 'Sales', hint: 'Square, Shopify or POS export (CSV)' },
-  { key: 'catalog', label: 'Products and costs', hint: 'Your product list with prices and unit costs (CSV)' },
-] as const;
+type Step = 'idle' | 'starting';
 const CREW = [
   { name: 'Rosa', role: 'Night manager', color: '#FF3BD4' },
   { name: 'Vic', role: 'Price checker', color: '#39E8FF' },
@@ -46,11 +41,11 @@ function Bot({ color }: { color: string }) {
 export function Landing() {
   const router = useRouter();
   const canvas = useRef<HTMLCanvasElement>(null);
+  const picker = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState('');
   const [step, setStep] = useState<Step>('idle');
-  const [cands, setCands] = useState<BusinessCandidate[] | null>(null);
-  const [pick, setPick] = useState<number | null>(null);
-  const [files, setFiles] = useState<Record<string, File | undefined>>({});
+  const [files, setFiles] = useState<File[]>([]);
+  const [drag, setDrag] = useState(false);
   const [name, setName] = useState('');
   const [owner, setOwner] = useState<Owner | null>(null);
   const [link, setLink] = useState<string | null>(null);
@@ -67,16 +62,11 @@ export function Landing() {
     try { const id = localStorage.getItem('afterhours.owner'); if (id) api<Owner>('GET', `/api/owner/${id}`).then(setOwner).catch(() => {}); } catch {}
   }, []);
 
-  async function look(e: React.FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
-    setErr(null); setStep('looking'); setCands(null); setPick(null);
-    try {
-      const r = await api<{ candidates: BusinessCandidate[] }>('POST', '/api/lookup', { query: query.trim() });
-      setCands(r.candidates);
-      if (r.candidates.length === 1) setPick(0);
-    } catch (x) { setErr((x as Error).message); }
-    setStep('idle');
+  function addFiles(list: FileList | null) {
+    if (!list) return;
+    const next = [...files];
+    for (const f of Array.from(list)) if (!next.some((x) => x.name === f.name && x.size === f.size)) next.push(f);
+    setFiles(next.slice(0, 25));
   }
 
   async function connectTexts() {
@@ -89,21 +79,26 @@ export function Landing() {
     } catch (x) { setErr((x as Error).message); }
   }
 
-  async function go() {
-    if (pick === null || !cands) return;
+  async function go(e?: React.FormEvent) {
+    e?.preventDefault();
+    const shop = query.trim();
+    if (!shop) { setErr('Add your shop’s name (and city) so Rosa can find it.'); return; }
     setErr(null); setStep('starting');
     try {
       setStatus('Opening the shift…');
-      const run = await api<Run>('POST', '/api/runs', { candidate: cands[pick], ownerId: owner?.id });
-      const chosen = FILES.filter((f) => files[f.key]);
-      if (chosen.length) {
-        setStatus('Handing your books to Lou…');
+      // Start right away. Rosa looks the shop up on the web while the crew works the books.
+      const candidate: BusinessCandidate = { name: shop, sourceUrl: `https://www.google.com/maps/search/${encodeURIComponent(shop)}`, confidence: 'low' };
+      const run = await api<Run>('POST', '/api/runs', { candidate, ownerId: owner?.id });
+      if (files.length) {
+        setStatus(`Handing ${files.length} file${files.length > 1 ? 's' : ''} to Dot…`);
         const form = new FormData();
         form.append('runId', run.id);
-        for (const f of chosen) form.append(f.key, files[f.key]!);
-        await api('POST', '/api/books', form);
+        for (const f of files) form.append('files', f);
+        const sorted = await api<{ files?: { kind: string }[] }>('POST', '/api/books', form);
+        const kinds = (sorted.files ?? []).reduce<Record<string, number>>((m, f) => ({ ...m, [f.kind]: (m[f.kind] ?? 0) + 1 }), {});
+        const summary = Object.entries(kinds).map(([k, n]) => `${n} ${k}`).join(', ');
+        if (summary) setStatus(`Dot sorted ${files.length} file${files.length > 1 ? 's' : ''}: ${summary}`);
       }
-      setStatus('Clocking the crew in…');
       await api('POST', `/api/runs/${run.id}/start`);
       router.push(`/shop?run=${encodeURIComponent(run.id)}`);
     } catch (x) { setErr((x as Error).message); setStep('idle'); setStatus(''); }
@@ -130,45 +125,36 @@ export function Landing() {
           </p>
         </section>
 
-        <section aria-label="Send in the crew" style={{ alignSelf: 'center', justifySelf: 'end', width: 'min(100%, 520px)', boxSizing: 'border-box', padding: 24, borderRadius: 22, background: 'rgba(18,13,34,.88)', border: '1px solid #2A2148', boxShadow: '0 0 0 1px rgba(255,59,212,.12), 0 30px 80px rgba(0,0,0,.5)', backdropFilter: 'blur(8px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <form onSubmit={look} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <label htmlFor="q" style={{ fontFamily: "'Geist Mono', monospace", fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A9B4D6' }}>1 · Which business?</label>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <input id="q" className="ah-input" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Name and city, e.g. a café on your street" autoComplete="off" disabled={busy} />
-              <button className="ah-btn ghost" type="submit" disabled={busy || !query.trim()}>{step === 'looking' ? 'Looking…' : 'Find it'}</button>
-            </div>
-            {cands && cands.length === 0 && <p style={{ margin: 0, color: '#FFC23D', fontSize: 14 }}>No match yet. Add the city or the street.</p>}
-            {cands && cands.length > 0 && (
-              <div role="list" style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 240, overflowY: 'auto' }}>
-                {cands.map((c, i) => (
-                  <button key={c.sourceUrl + i} type="button" role="listitem" className="ah-cand" aria-pressed={pick === i} onClick={() => setPick(i)} disabled={busy}>
-                    <span aria-hidden="true" style={{ width: 10, height: 10, marginTop: 6, borderRadius: 999, flex: 'none', background: pick === i ? '#39E8FF' : '#3B2F66' }} />
-                    <span style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
-                      <span style={{ fontWeight: 600 }}>{c.name}</span>
-                      <span style={{ fontSize: 13, color: '#A9B4D6' }}>{[c.category, c.address, c.city].filter(Boolean).join(' · ')}</span>
-                      <span style={{ fontFamily: "'Geist Mono', monospace", fontSize: 11, color: '#7E89B0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>found on {(() => { try { return new URL(c.sourceUrl).hostname.replace(/^www\./, ''); } catch { return c.sourceUrl; } })()}</span>
-                    </span>
-                  </button>
+        <form onSubmit={go} aria-label="Send in the crew" style={{ alignSelf: 'center', justifySelf: 'end', width: 'min(100%, 520px)', boxSizing: 'border-box', padding: 24, borderRadius: 22, background: 'rgba(18,13,34,.88)', border: '1px solid #2A2148', boxShadow: '0 0 0 1px rgba(255,59,212,.12), 0 30px 80px rgba(0,0,0,.5)', backdropFilter: 'blur(8px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A9B4D6' }}>1 · Drop your shop&apos;s files</div>
+            <label
+              onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+              onDragLeave={() => setDrag(false)}
+              onDrop={(e) => { e.preventDefault(); setDrag(false); addFiles(e.dataTransfer.files); }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6, minHeight: 130, padding: 16, borderRadius: 16, border: `2px dashed ${drag ? '#39E8FF' : '#3B2F66'}`, background: drag ? 'rgba(57,232,255,.08)' : 'rgba(14,10,28,.6)', cursor: 'pointer', textAlign: 'center', transition: 'all .15s' }}>
+              <span style={{ fontWeight: 600, fontSize: 17 }}>{files.length ? `${files.length} file${files.length > 1 ? 's' : ''} ready` : 'Drop CSVs here, or click to choose'}</span>
+              <span style={{ fontSize: 13, color: '#A9B4D6', lineHeight: 1.45 }}>Bank or card exports, Square or Shopify sales, your product list. Any names; Dot sorts them.</span>
+              <input ref={picker} type="file" multiple accept=".csv,text/csv,.tsv,.txt" onChange={(e) => { addFiles(e.target.files); e.target.value = ''; }} disabled={busy} style={{ position: 'absolute', width: 1, height: 1, opacity: 0 }} />
+            </label>
+            {files.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {files.map((f) => (
+                  <span key={f.name + f.size} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 6px 4px 10px', borderRadius: 999, background: '#1C1730', fontSize: 12 }}>
+                    {f.name}
+                    <button type="button" aria-label={`Remove ${f.name}`} onClick={() => setFiles(files.filter((x) => x !== f))} disabled={busy} style={{ width: 22, height: 22, border: 0, borderRadius: 999, background: '#2A2148', color: '#E9F6FF', cursor: 'pointer' }}>×</button>
+                  </span>
                 ))}
               </div>
             )}
-          </form>
+          </div>
 
-          <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }} disabled={busy}>
-            <legend style={{ padding: 0, marginBottom: 10, fontFamily: "'Geist Mono', monospace", fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A9B4D6' }}>2 · Upload your financials <span style={{ color: '#7E89B0', textTransform: 'none', letterSpacing: 0 }}>(optional)</span></legend>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8 }}>
-              {FILES.map((f) => (
-                <label key={f.key} className="ah-file">
-                  <span style={{ fontWeight: 600, fontSize: 14 }}>{f.label}</span>
-                  <span style={{ fontSize: 12, color: files[f.key] ? '#39FF9F' : '#A9B4D6', overflowWrap: 'anywhere' }}>{files[f.key]?.name ?? f.hint}</span>
-                  <input type="file" accept=".csv,text/csv" onChange={(e) => setFiles((s) => ({ ...s, [f.key]: e.target.files?.[0] }))} style={{ position: 'absolute', width: 1, height: 1, opacity: 0 }} />
-                </label>
-              ))}
-            </div>
-            <p style={{ margin: 0, fontSize: 13, color: '#A9B4D6', lineHeight: 1.45 }}>Lou checks for bills paid twice, subscriptions that crept up and margins that slipped. Real sales numbers replace the estimates. Your files stay in this shift.</p>
-          </fieldset>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <label htmlFor="q" style={{ fontFamily: "'Geist Mono', monospace", fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A9B4D6' }}>2 · Shop name and city</label>
+            <input id="q" className="ah-input" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="e.g. Sunrise Coffee, Fremont CA" autoComplete="off" disabled={busy} />
+          </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A9B4D6' }}>3 · Get Rosa&apos;s texts <span style={{ color: '#7E89B0', textTransform: 'none', letterSpacing: 0 }}>(optional)</span></div>
             {owner?.verified ? (
               <p style={{ margin: 0, fontSize: 14, color: '#39FF9F' }}>Connected. Rosa will text {owner.name} when the crew finds something.</p>
@@ -177,19 +163,19 @@ export function Landing() {
                 <label htmlFor="owner" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden' }}>Your first name</label>
                 <input id="owner" className="ah-input" style={{ flex: '1 1 160px' }} value={name} onChange={(e) => setName(e.target.value)} placeholder="Your first name" disabled={busy} />
                 {link ? (
-                  <a className="ah-btn ghost" href={link} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}>Open Telegram to connect</a>
+                  <a className="ah-btn ghost" href={link} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}>Open Telegram</a>
                 ) : (
-                  <button className="ah-btn ghost" type="button" onClick={connectTexts} disabled={busy}>Connect on Telegram</button>
+                  <button className="ah-btn ghost" type="button" onClick={connectTexts} disabled={busy}>Connect Telegram</button>
                 )}
               </div>
             )}
           </div>
 
           {err && <p role="alert" style={{ margin: 0, padding: '10px 12px', borderRadius: 10, background: 'rgba(255,92,138,.12)', color: '#FF8FB0', fontSize: 14 }}>{err}</p>}
-          <button className="ah-btn" type="button" onClick={go} disabled={busy || pick === null} style={{ minHeight: 60, fontSize: 18, boxShadow: pick !== null ? '0 0 28px rgba(194,24,158,.55)' : 'none' }}>
+          <button className="ah-btn" type="submit" disabled={busy || !query.trim()} style={{ minHeight: 60, fontSize: 18, boxShadow: query.trim() ? '0 0 28px rgba(194,24,158,.55)' : 'none' }}>
             {step === 'starting' ? status || 'Starting…' : 'Send in the crew'}
           </button>
-        </section>
+        </form>
 
         <footer style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 10 }}>
           {CREW.map((w) => (
