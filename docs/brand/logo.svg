@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="-80 -80 160 160" role="img" aria-label="afterhours logo">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140A2E"/><stop offset="1" stop-color="#07050F"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="bigglow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#8F6BFF" stroke-opacity="0.08"/></pattern>
+</defs><rect x="-80" y="-80" width="160" height="160" rx="36" fill="#0B0820"/><g transform="translate(0,0) scale(1.2)">
+  <ellipse cx="0" cy="62" rx="30" ry="6" fill="#FF3BD4" opacity="0.18"/>
+  <line x1="0" y1="-30" x2="0" y2="-44" stroke="#FF3BD4" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="0" cy="-47" r="5" fill="#FF3BD4" filter="url(#glow)"/>
+  <path d="M-30 30 Q-32 -30 0 -30 Q32 -30 30 30 Q30 42 18 42 L-18 42 Q-30 42 -30 30 Z" fill="#FF3BD4"/>
+  <path d="M-30 30 Q-32 -30 0 -30 Q32 -30 30 30" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+  <rect x="-22" y="-8" width="44" height="20" rx="10" fill="#0B0820"/>
+  <rect x="-13" y="-2" width="7" height="8" rx="2" fill="#FF3BD4" filter="url(#glow)"/>
+  <rect x="6" y="-2" width="7" height="8" rx="2" fill="#FF3BD4" filter="url(#glow)"/>
+</g></svg>

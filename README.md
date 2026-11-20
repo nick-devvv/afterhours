@@ -1,12 +1,28 @@
-# afterhours
+<p align="center">
+  <img src="docs/brand/banner.svg" alt="afterhours: You close at 6. Your crew starts at 6:01. A night crew of Grok Bots for small businesses." width="100%">
+</p>
 
-**You close at 6. Your crew starts at 6:01.**
+<p align="center">
+  <a href="https://afterhours-picky9.vercel.app"><img src="https://img.shields.io/badge/live-afterhours--picky9.vercel.app-FF3BD4?style=for-the-badge&labelColor=0B0820" alt="Live app"></a>
+  <img src="https://img.shields.io/badge/built_with-Grok_Bot-39E8FF?style=for-the-badge&labelColor=0B0820" alt="Built with Grok Bot">
+  <img src="https://img.shields.io/badge/model-Grok_4.7-8F6BFF?style=for-the-badge&labelColor=0B0820" alt="Grok 4.7">
+  <img src="https://img.shields.io/badge/crew-7_agents-39FF9F?style=for-the-badge&labelColor=0B0820" alt="7 agents">
+</p>
 
-A night crew of Grok Bots for a small business. Name any real business: the crew checks its prices against the street, reads its reviews, tests every link on its site and goes through its books. Then it drafts the fixes and texts the owner. Every claim comes with a link.
+<p align="center">
+  <b>A night crew of Grok Bots for small businesses.</b><br>
+  Name any real business. The crew checks its prices against the street, reads its reviews, tests every link on its site<br>
+  and goes through its books. Then it drafts the fixes and texts the owner. <b>Every claim comes with a link.</b>
+</p>
 
-🤖 Built with Grok Bot · Berkeley × Stanford hackathon, Nov 19 2026
+<p align="center">
+  <a href="https://afterhours-picky9.vercel.app">Live app</a> ·
+  <a href="docs/MVP_SPEC.md">How it works</a> ·
+  <a href="grokbot/BOTS.md">The crew's job descriptions</a> ·
+  <a href="grokbot/setup/README.md">Run the crew as Grok Bots</a>
+</p>
 
-[Live app](https://afterhours-picky9.vercel.app) · [How it works](docs/MVP_SPEC.md) · [The crew's job descriptions](grokbot/BOTS.md)
+<p align="center"><sub>Berkeley × Stanford hackathon · Nov 19, 2026</sub></p>
 
 ![The Afterhours landing page: a neon city block at night, the three-step intake form and the crew of Grok Bots](docs/screenshots/landing.jpg)
 
@@ -16,13 +32,13 @@ Seven agents, one night shift. Six of them are **real Grok Bots**, each with its
 
 | | Bot | Job |
 | --- | --- | --- |
-| 🟥 | **Rosa**, night manager | Finds the business, its hours and its prices. Texts the owner, and the owner approves by replying `YES 1` |
-| 🟩 | **Vic**, price checker | Walks the street, reads 2–4 competitors' menus and pairs the same item, same size |
-| 🟪 | **June**, listener | Reads reviews and X posts, groups complaints into themes with real quotes |
-| 🟦 | **Otto**, storefront | Our own site checker tests every order, menu and booking link; compares hours and phone across listings |
-| 🟧 | **Lou**, bookkeeper | Duplicate payments, creeping subscriptions and shrinking margins in the owner's own exports |
-| 🟫 | **Dot**, file clerk | The owner drops every file at once; Dot works out which is expenses, sales or the price list |
-| 🩵 | **Fern**, fixer | Drafts one fix per finding: the new price, the review reply, the listing update |
+| <img src="docs/brand/dot-rosa.svg" width="14" alt=""> | **Rosa**, night manager | Finds the business, its hours and its prices. Texts the owner, and the owner approves by replying `YES 1` |
+| <img src="docs/brand/dot-vic.svg" width="14" alt=""> | **Vic**, price checker | Walks the street, reads 2–4 competitors' menus and pairs the same item, same size |
+| <img src="docs/brand/dot-june.svg" width="14" alt=""> | **June**, listener | Reads reviews and X posts, groups complaints into themes with real quotes |
+| <img src="docs/brand/dot-otto.svg" width="14" alt=""> | **Otto**, storefront | Our own site checker tests every order, menu and booking link; compares hours and phone across listings |
+| <img src="docs/brand/dot-lou.svg" width="14" alt=""> | **Lou**, bookkeeper | Duplicate payments, creeping subscriptions and shrinking margins in the owner's own exports |
+| <img src="docs/brand/dot-dot.svg" width="14" alt=""> | **Dot**, file clerk | The owner drops every file at once; Dot works out which is expenses, sales or the price list |
+| <img src="docs/brand/dot-fern.svg" width="14" alt=""> | **Fern**, fixer | Drafts one fix per finding: the new price, the review reply, the listing update |
 
 ![The shift in progress: the crew of Grok Bots at work in the 3D shop, each tagged GROK BOT, with their status cards on the right](docs/screenshots/shift.jpg)
 
