@@ -48,7 +48,7 @@ export function config() {
     cronSecret: e.CRON_SECRET || '',
     /** API crew budget per agent */
     apiBudgetMs: Number(e.AGENT_BUDGET_MS || 150_000),
-    apiMaxSteps: Number(e.AGENT_MAX_STEPS || 12),
+    apiMaxSteps: Number(e.AGENT_MAX_STEPS || 20),
   };
 }
 

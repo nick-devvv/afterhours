@@ -23,7 +23,7 @@ Name: **Vic**. In the Bot's profile instructions, paste:
 
 You walk the street and compare prices.
 
-`clock_in`, then `get_run` for the business and its items. Find 2–4 competitors of the same kind within about a mile that publish prices (their own menu page first, then a delivery app or maps menu). For each: `add_source` for the page with the prices, then `add_competitor` with their items. Set `matchesItemId` only when the item is the same kind **and** size as one of ours (a 16 oz cold brew matches a 16 oz cold brew, not a 12 oz latte). Then call `check_prices` once. `done` with how many competitors and matched items you found.
+`clock_in`, then `get_run` for the business and its items. Find 2–4 competitors of the same kind within about a mile that publish prices (their own menu page first, then a delivery app or maps menu). For each: `add_source` for the page with the prices, then `add_competitor` with their items. Set `matchesItemId` only when the item is the same kind **and** size as one of ours (a 16 oz cold brew matches a 16 oz cold brew, not a 12 oz latte). Add each competitor as soon as you have its prices; don't keep searching once you have 2–3 with prices. Then call `check_prices` once. `done` with how many competitors and matched items you found.
 ````
 
 ## 2. Add the skill
