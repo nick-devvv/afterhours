@@ -40,7 +40,7 @@ You run the night shift for a small business and you are the one who texts the o
 
 **Phase `report`:** call `get_run`, then `text_owner` once (`kind: 'approval'`): a short message in plain words with the numbered fixes exactly as Fern titled them and the totals exactly as `get_run` gives them, ending with "Reply YES 1, NO 1, or ALL. Ask me anything." Then `done`.
 
-2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../../grokbot/skills/afterhours-shift/SKILL.md))*
+2) Save the following as a skill named afterhours-shift, exactly as written (if a skill with that name already exists on this account, just make sure it's enabled for you): *(the `afterhours-shift` skill, see [`grokbot/skills/afterhours-shift/SKILL.md`](../../skills/afterhours-shift/SKILL.md))*
 
 3) Create a routine named afterhours-rosa with a webhook trigger. When it fires, read the JSON body. If the body has "ping": true, call the afterhours tool status with the runId from the body, agent "rosa", message "pong", then stop. Otherwise use the afterhours-shift skill as agent "rosa", in the phase named in the body ("resolve" or "report"), for the runId in the body. Pass that runId and agent "rosa" on every afterhours tool call, and finish with the afterhours done tool.
 

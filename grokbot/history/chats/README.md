@@ -13,4 +13,4 @@ Every conversation with the six Afterhours crew Grok Bots, in order, exported fr
 
 Rosa, Otto and Fern exported their own chats to Google Drive. Vic, June and Lou were copied straight from the Grok Bot app.
 
-The long setup message is the same for every Bot, so it links to [`grokbot/skills/afterhours-shift/SKILL.md`](../../../grokbot/skills/afterhours-shift/SKILL.md) instead of repeating the skill text. The agent token is replaced with `<AFTERHOURS_AGENT_TOKEN>`.
+The long setup message is the same for every Bot, so it links to [`grokbot/skills/afterhours-shift/SKILL.md`](../../skills/afterhours-shift/SKILL.md) instead of repeating the skill text. The agent token is replaced with `<AFTERHOURS_AGENT_TOKEN>`.
