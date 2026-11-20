@@ -6,6 +6,7 @@ import { handleInbound } from '@/lib/text/inbound';
 import { sendText, allowlisted } from '@/lib/text/send';
 import { welcome } from '@/lib/text/templates';
 import { replyToChat } from '@/lib/text/telegramSetup';
+import { defaultOwnerId } from '@/lib/text/defaultOwner';
 
 export const maxDuration = 60;
 
@@ -35,7 +36,12 @@ export async function POST(req: Request) {
         await sendText(owner, welcome(owner), { kind: 'welcome', reply: true });
         return;
       }
-      const owner = await findOwner({ telegramChatId: chatId });
+      let owner = await findOwner({ telegramChatId: chatId });
+      if (!owner && chatId === process.env.OWNER_TELEGRAM_CHAT_ID?.trim()) {
+        const id = await defaultOwnerId();
+        owner = id ? await getOwner(id) : null;
+        if (owner && /^\/start\b/.test(text)) { await sendText(owner, welcome(owner), { kind: 'welcome', reply: true }); return; }
+      }
       if (!owner) {
         console.warn(`[telegram] message from unknown chat ${chatId}`);
         await replyToChat(chatId, `Hi, it's Rosa from Afterhours. I run the night crew for your business. To connect me, open ${c.publicUrl}, add your name under "Get Rosa's texts" and tap Connect on Telegram.`);
