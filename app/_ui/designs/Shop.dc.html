@@ -992,8 +992,8 @@ class Component extends DCLogic {
         fx = {
           kind: isPrice ? 'Price change' : d.type === 'refund_request' ? 'Refund request' : 'Downgrade request',
           gain: d.oneTimeCents ? '+' + this.money(d.oneTimeCents, true) + ' once' : '+' + this.money(d.monthlyCents, true) + ' a month',
-          isEmail: !isPrice, isPrice, to: isPrice ? this.money(d.priceChange.toCents, true) : d.to, subject: d.subject || '',
-          body: d.body ? d.body.split('\n').filter((l) => l.trim()).slice(1, -2).join('\n') : '',
+          isEmail: !isPrice, isPrice, to: isPrice ? this.money(d.priceChange.toCents, true) : (d.to || d.vendor || 'the vendor'), subject: d.subject || '',
+          body: d.body ? d.body.trim() : '',
           product: isPrice ? d.product : '', from: isPrice ? this.money(d.priceChange.fromCents, true) : '',
           statusText: this.fixStatusText(d, awaiting, s), statusColor: d.status === 'rejected' ? '#A9B4D6' : d.status === 'failed' ? '#FF5C8A' : d.status === 'drafted' ? '#FFC23D' : '#39E8FF',
           pending: d.status === 'drafted' && awaiting && !d.working,
