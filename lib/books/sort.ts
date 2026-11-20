@@ -132,7 +132,7 @@ function columnHolds(rows: Record<string, string>[], header: string | undefined,
 const PROFILES: { kind: Exclude<BooksKind, 'other' | 'skipped'>; fields: BooksField[]; required: BooksField[][] }[] = [
   { kind: 'expenses', fields: ['date', 'payee', 'amount', 'reference', 'category'], required: [['date'], ['payee'], ['amount']] },
   { kind: 'sales', fields: ['date', 'item', 'sku', 'quantity', 'net_sales', 'unit_price'], required: [['date'], ['item', 'sku'], ['quantity', 'net_sales']] },
-  { kind: 'catalog', fields: ['sku', 'item', 'unit_price', 'unit_cost', 'category'], required: [['item', 'sku'], ['unit_price', 'unit_cost']] },
+  { kind: 'catalog', fields: ['sku', 'item', 'unit_price', 'unit_cost', 'category', 'date'], required: [['item', 'sku'], ['unit_price', 'unit_cost']] },
 ];
 
 export interface CodeSort {
