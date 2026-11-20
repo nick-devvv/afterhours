@@ -79,6 +79,16 @@ export function Landing() {
     } catch (x) { setErr((x as Error).message); }
   }
 
+  // Demo: load the sample books for a made-up shop (Quillbrook Coffee) so anyone can try it without files.
+  const DEMO_FILES = ['quillbrook-coffee-bank-export-may-oct-2026.csv', 'quillbrook-coffee-square-sales-aug-oct-2026.csv', 'quillbrook-coffee-menu-prices-and-costs.csv'];
+  async function loadDemo() {
+    try {
+      const got = await Promise.all(DEMO_FILES.map(async (n) => new File([await (await fetch(`/samples/${n}`)).blob()], n, { type: 'text/csv' })));
+      setFiles(got); setQuery('Quillbrook Coffee'); setErr(null);
+    } catch { setErr('Could not load the sample books. Try again.'); }
+  }
+  useEffect(() => { if (/[?&]demo\b/.test(window.location.search)) loadDemo(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   async function go(e?: React.FormEvent) {
     e?.preventDefault();
     const shop = query.trim();
@@ -174,6 +184,9 @@ export function Landing() {
           {err && <p role="alert" style={{ margin: 0, padding: '10px 12px', borderRadius: 10, background: 'rgba(255,92,138,.12)', color: '#FF8FB0', fontSize: 14 }}>{err}</p>}
           <button className="ah-btn" type="submit" disabled={busy || !query.trim()} style={{ minHeight: 60, fontSize: 18, boxShadow: query.trim() ? '0 0 28px rgba(194,24,158,.55)' : 'none' }}>
             {step === 'starting' ? status || 'Starting…' : 'Send in the crew'}
+          </button>
+          <button type="button" onClick={loadDemo} disabled={busy} style={{ minHeight: 44, borderRadius: 999, border: '1px solid #2A2148', background: 'transparent', color: '#39E8FF', font: 'inherit', fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>
+            No files? Try the demo shop (sample books)
           </button>
         </form>
 
