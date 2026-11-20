@@ -18,7 +18,7 @@ import { makeCrew, resolveAuto, type CrewOptions } from '../crew';
 import { computeTotals } from '../crew/totals';
 import type { Books, Crew, CrewHooks, Fix, PlumbEvent, Shop as ShopInfo, UIFinding } from '../crew/types';
 
-const RING_DISABLED = true;
+const RING_DISABLED = false;
 
 export type Phase = 'ready' | 'running' | 'awaiting_approval' | 'sending' | 'done' | 'night';
 export type AgentStatus = 'off' | 'clocked_in' | 'working' | 'waiting' | 'break' | 'done';
@@ -543,7 +543,7 @@ export class Shop {
   }
 
   private ring(agent: AgentId, reason: CallState['reason'], finding: string | null) {
-    // Afterhours: Rosa texts the owner (real Telegram thread) instead of calling. No in-app calls.
+    // Rosa rings on screen when the crew finds something; the shop pauses until you answer or it times out.
     if (RING_DISABLED) return;
     if (this.call && (this.call.state === 'ringing' || this.call.state === 'live')) return;
     this.call = { id: ++this.callSeq, agent, state: 'ringing', incoming: true, reason, finding, preapproved: false };
