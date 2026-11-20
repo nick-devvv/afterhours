@@ -1,12 +1,12 @@
 // The shift DAG for both crews: Rosa resolves → Vic, June, Otto in parallel → Fern → Rosa texts.
 // Grok Bots only ever do one job when their webhook fires; this file decides who goes next.
-import type { AgentId, Run } from '../types';
+import type { AgentId, Run, Source } from '../types';
 import { config } from '../config';
 import { ApiErr } from '../http';
 import { nowIso } from '../ids';
 import { getRecord, mutate, type Emit, type ShiftState } from '../store';
 import { kv } from '../store/kv';
-import { AGENT_INFO, agentOf } from '../runs';
+import { AGENT_INFO, agentOf, candidateOf } from '../runs';
 import { currentJob, jobKey, type Phase } from './jobs';
 
 export interface Job {
@@ -50,6 +50,25 @@ function advance(run: Run, shift: ShiftState, emit: Emit): Job[] {
   for (let guard = 0; guard < 6; guard++) {
     const fin = (k: string) => shift.finished.includes(k);
     if (shift.phase === 'resolve' && fin('rosa:resolve')) {
+      const cand = run.business ? undefined : candidateOf(shift);
+      if (!run.business && cand) {
+        // Rosa ran out of time: carry on from what the owner picked in lookup (real, with a source link).
+        const source: Source = { id: `src_${run.sources.length + 1}`, url: cand.sourceUrl, title: `${cand.name} (picked in lookup)`, kind: cand.website === cand.sourceUrl ? 'website' : 'maps', fetchedAt: nowIso(), foundBy: 'rosa' };
+        run.sources.push(source);
+        emit('source.found', { source }, { agent: 'rosa', room: 'front_desk' });
+        run.business = {
+          id: `biz_${run.id.slice(4)}`,
+          name: cand.name,
+          ...(cand.category ? { category: cand.category } : {}),
+          ...(cand.address ? { address: cand.address } : {}),
+          ...(cand.city ? { city: cand.city } : {}),
+          ...(cand.website ? { website: cand.website } : {}),
+          items: [],
+          sourceIds: [source.id],
+        };
+        emit('business.resolved', { business: run.business }, { agent: 'rosa', room: 'front_desk' });
+        emit('agent.status', { message: "Couldn't read a price list in time; the crew works from the listing you picked.", progress: 100 }, { agent: 'rosa', room: 'front_desk' });
+      }
       if (!run.business) {
         if (!hasBooks(run)) {
           close(run, shift, emit, 'failed', "Rosa couldn't pin down the business, so the crew stood down.");

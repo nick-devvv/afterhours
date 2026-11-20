@@ -150,3 +150,18 @@ describe('prompts stay in sync with grokbot/BOTS.md', () => {
     }
   });
 });
+
+describe('Rosa fallback', () => {
+  it('if Rosa resolves nothing, the crew carries on from the lookup pick', async () => {
+    resetKV();
+    jobs = [];
+    setApiDispatcher(async (j) => void jobs.push(j));
+    const run = await createRun({ crew: 'api', candidate: { name: 'Test Cafe', address: '1 Main St', city: 'Palo Alto', website: 'https://example.test', sourceUrl: 'https://example.test', confidence: 'high' } });
+    await startRun(run.id);
+    await call('done', { runId: run.id, agent: 'rosa', summary: 'nothing' });
+    const r = await mustGetRun(run.id);
+    expect(r.business!.name).toBe('Test Cafe');
+    expect(r.business!.sourceIds).toHaveLength(1);
+    expect(jobs.map((j) => j.agent).sort()).toEqual(['june', 'otto', 'rosa', 'vic']);
+  });
+});
